@@ -3,21 +3,22 @@
 
 #include <wirish/wirish.h>
 #include <libmaple/gpio.h>
+#include <libmaple/delay.h>
+#include <libmaple/usart.h>
 
 void setup() {
-    /* Set up the LED to blink  */
-    pinMode(BOARD_LED_PIN, OUTPUT);
-
-    /* Send a message out USART2  */
-    Serial1.begin(9600);
-    Serial1.println("Hello world!");
-	
-	gpio_set_mode(GPIOA,0,GPIO_OUTPUT_PP);
+    usart_init(USART1);
+    usart_set_baud_rate(USART1,48000000,9600);
+    usart_enable(USART1); 
+    gpio_set_mode(GPIOA, 10, GPIO_INPUT_FLOATING);
+    gpio_set_mode(GPIOA, 9, GPIO_AF_OUTPUT_PP);
+	gpio_set_mode(GPIOA, 0, GPIO_OUTPUT_PP);
+    
 }
 
 void loop() {
-    delay(500);
-    Serial1.println("Yo");
+    delay_us(500000);
+    usart_putstr(USART1,"Yo\r\n");
     gpio_toggle_bit(GPIOA,0);
 }
 
