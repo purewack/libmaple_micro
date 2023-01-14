@@ -30,7 +30,7 @@ BOARD_INCLUDE_DIR := $(MAKEDIR)/board-includes
 # Try "make help" for more information on BOARD and MEMORY_TARGET;
 # these default to a Maple Flash build.
 BOARD ?= maple
-MEMORY_TARGET ?= flash
+MEMORY_TARGET ?= jtag
 
 # Chooses the bootloader, available: maple and robotis
 BOOTLOADER ?= maple
@@ -81,14 +81,14 @@ LIBMAPLE_MODULES += $(LIBMAPLE_MODULE_SERIES) # STM32 series submodule in libmap
 LIBMAPLE_MODULES += $(SRCROOT)/wirish
 
 # Official libraries:
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/Servo
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/LiquidCrystal
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/Wire
+#LIBMAPLE_MODULES += $(SRCROOT)/libraries/Servo
+#LIBMAPLE_MODULES += $(SRCROOT)/libraries/LiquidCrystal
+#LIBMAPLE_MODULES += $(SRCROOT)/libraries/Wire
 
 # User modules:
-ifneq ($(USER_MODULES),)
-LIBMAPLE_MODULES += $(USER_MODULES)
-endif
+#ifneq ($(USER_MODULES),)
+#LIBMAPLE_MODULES += $(USER_MODULES)
+#endif
 
 # Call each module's rules.mk:
 $(foreach m,$(LIBMAPLE_MODULES),$(eval $(call LIBMAPLE_MODULE_template,$(m))))

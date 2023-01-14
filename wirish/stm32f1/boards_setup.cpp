@@ -54,8 +54,8 @@
 namespace wirish {
     namespace priv {
 
-        static stm32f1_rcc_pll_data pll_data = {BOARD_RCC_PLLMUL};
-        __weak rcc_pll_cfg w_board_pll_cfg = {RCC_PLLSRC_HSE, &pll_data};
+        static stm32f1_rcc_pll_data pll_data = {RCC_PLLMUL_12};
+        __weak rcc_pll_cfg w_board_pll_cfg = {RCC_PLLSRC_HSI_DIV_2, &pll_data};
         __weak adc_prescaler w_adc_pre = ADC_PRE_PCLK2_DIV_6;
         __weak adc_smp_rate w_adc_smp = ADC_SMPR_55_5;
 

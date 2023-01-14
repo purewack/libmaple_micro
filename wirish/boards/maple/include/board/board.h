@@ -34,7 +34,7 @@
 #define _BOARD_MAPLE_H_
 
 /* 72 MHz -> 72 cycles per microsecond. */
-#define CYCLES_PER_MICROSECOND  72
+#define CYCLES_PER_MICROSECOND  48
 
 /* Pin number for the built-in button. */
 #define BOARD_BUTTON_PIN        38

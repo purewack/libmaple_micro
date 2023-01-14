@@ -97,20 +97,20 @@ bool boardUsesPin(uint8 pin) {
 extern char __text_start__;
 
 static void setup_nvic(void) {
-#ifdef VECT_TAB_FLASH
-    nvic_init(USER_ADDR_ROM, 0);
-#elif defined VECT_TAB_RAM
-    nvic_init(USER_ADDR_RAM, 0);
-#elif defined VECT_TAB_BASE
+//#ifdef VECT_TAB_FLASH
+//    nvic_init(USER_ADDR_ROM, 0);
+//#elif defined VECT_TAB_RAM
+//    nvic_init(USER_ADDR_RAM, 0);
+//#elif defined VECT_TAB_BASE
     nvic_init((uint32)0x08000000, 0);
-#elif defined VECT_TAB_ADDR
-    // A numerically supplied value
-    nvic_init((uint32)VECT_TAB_ADDR, 0);
-#else
-    // Use the __text_start__ value from the linker script; this
-    // should be the start of the vector table.
-    nvic_init((uint32)&__text_start__, 0);
-#endif
+//#elif defined VECT_TAB_ADDR
+//    // A numerically supplied value
+//    nvic_init((uint32)VECT_TAB_ADDR, 0);
+//#else
+//    // Use the __text_start__ value from the linker script; this
+//    // should be the start of the vector table.
+//    nvic_init((uint32)&__text_start__, 0);
+//#endif
 }
 
 /*
@@ -120,7 +120,7 @@ static void setup_nvic(void) {
 namespace wirish {
 namespace priv {
 
-__weak rcc_clk w_board_pll_in_clk = RCC_CLK_HSE;
+__weak rcc_clk w_board_pll_in_clk = RCC_CLK_HSI;
 
 __weak void board_setup_flash(void) {
     // Turn on as many Flash "go faster" features as
@@ -142,9 +142,7 @@ __weak void board_setup_clocks(void) {
     RCC_BASE->CFGR = 0x00000000;
     rcc_disable_css();
     rcc_turn_off_clk(RCC_CLK_PLL);
-    if (w_board_pll_in_clk != RCC_CLK_HSI) {
-        rcc_turn_off_clk(w_board_pll_in_clk);
-    }
+    rcc_turn_off_clk(RCC_CLK_HSE);
     wirish::priv::board_reset_pll();
     // Clear clock readiness interrupt flags and turn off clock
     // readiness interrupts.
