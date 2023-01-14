@@ -121,10 +121,7 @@ UPLOAD_flash := $(SUPPORT_PATH)/scripts/robotis-loader.py $(ROBOTIS_PORT) $(BUIL
 endif
 
 # Conditionally upload to whatever the last build was
-install: INSTALL_TARGET = $(shell cat $(BUILD_PATH)/build-type 2>/dev/null)
-install: $(BUILD_PATH)/$(BOARD).bin
-	@echo "Install target:" $(INSTALL_TARGET)
-	$(UPLOAD_$(INSTALL_TARGET))
+install: ; $(shell stm32flash -b 115200 -w build/maple.bin -v -g 0x0 /dev/tty.usbserial-1420)
 
 # Force a rebuild if the target changed
 PREV_BUILD_TYPE = $(shell cat $(BUILD_PATH)/build-type 2>/dev/null)
