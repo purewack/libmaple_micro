@@ -1,0 +1,37 @@
+ENTRY(I_Reset)
+
+MEMORY
+{
+    FLASH(rx): ORIGIN = 0x08000000, LENGTH = 128K
+    SRAM(rwx): ORIGIN = 0x20000000, LENGTH = 20k
+}
+
+SECTIONS
+{
+    .text : {
+        _stext = .;
+        *(.isr)
+        . = ALIGN(4);
+        *(.text .text.* .gnu.linkonce.t.*)
+        . = ALIGN(4);
+        *(.glue_7t) *(.glue_7) *(.vfp11_veneer)
+        . = ALIGN(4);
+        *(.rodata)
+        . = ALIGN(4);
+        _etext = .;
+    }> FLASH
+
+    .data : {
+        _sdata = .;
+        *(.data)
+        . = ALIGN(4);
+        _edata = .;
+    }> SRAM AT> FLASH
+
+    .bss : {
+        _sbss = .;
+        *(.bss)
+        . = ALIGN(4);
+        _ebss = .;
+    }> SRAM
+}
