@@ -13,11 +13,14 @@ void setup() {
     Serial1.println("Hello world!");
 	
 	gpio_set_mode(GPIOA,0,GPIO_OUTPUT_PP);
+	gpio_set_mode(GPIOA,1,GPIO_OUTPUT_PP);
+    gpio_toggle_bit(GPIOA,1);
 }
 
 void loop() {
     delay(500);
     Serial1.println("Yo");
+    gpio_toggle_bit(GPIOA,0);
     gpio_toggle_bit(GPIOA,0);
 }
 
