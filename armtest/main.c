@@ -34,18 +34,24 @@ typedef struct gpio_reg_map {
 /** GPIO port C register map base pointer */
 #define GPIOC_BASE                      ((struct gpio_reg_map*)0x40011000)
 
+const char* testString = "Hello";
 
 void init(){
+    //enable gpioA clock
 	RCC_BASE->APB2ENR |= (uint32_t)(1<<2);
+    //reset gpioA device
+	RCC_BASE->APB2RSTR |= (uint32_t)(1<<2);
+    //set gpioA:0 as PP output 10MHz
 	GPIOA_BASE->CRL = (uint32_t)(0b0001);
 }
 
 void toggle(){
+    //toggle output bit 
 	GPIOA_BASE->ODR ^= (uint16_t)(0x1);
 }
 
 void delay_us(uint32_t us) {
-    us *= 12;
+    us *= 9;
 
     /* fudge for function call overhead  */
     us--;
@@ -62,7 +68,7 @@ int main(void){
 	init();
 	while(1){
 		toggle();
-		delay_us(1000000);
+		delay_us(30000U);
 	};
 	return 0;
 }

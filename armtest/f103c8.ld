@@ -14,7 +14,12 @@ SECTIONS
         . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);
-        *(.glue_7t) *(.glue_7) *(.vfp11_veneer)
+        *(.glue_7t) 
+        *(.glue_7) 
+        *(.vfp11_veneer) 
+        *(.v4_bx) 
+        *(.iplt)
+        *(.rel.dyn)
         . = ALIGN(4);
         *(.rodata)
         . = ALIGN(4);
@@ -23,14 +28,15 @@ SECTIONS
 
     .data : {
         _sdata = .;
-        *(.data)
+        *(.data .data.* .gnu.linkonce.d.*)
+        *(.igot.plt)
         . = ALIGN(4);
         _edata = .;
     }> SRAM AT> FLASH
 
     .bss : {
         _sbss = .;
-        *(.bss)
+        *(.bss .bss.* .gnu.linkonce.b.*)
         . = ALIGN(4);
         _ebss = .;
     }> SRAM

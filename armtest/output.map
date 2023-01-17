@@ -8,134 +8,135 @@ SRAM             0x0000000020000000 0x0000000000005000 xrw
 
 Linker script and memory map
 
+LOAD main.o
+LOAD vect.o
 
-.text           0x0000000008000000      0x248
+.text           0x0000000008000000      0x258
                 0x0000000008000000                _stext = .
  *(.isr)
  .isr           0x0000000008000000      0x124 vect.o
                 0x0000000008000000                vectors
                 0x0000000008000124                . = ALIGN (0x4)
  *(.text .text.* .gnu.linkonce.t.*)
- .text          0x0000000008000124       0x88 main.o
+ .text          0x0000000008000124       0x90 main.o
                 0x0000000008000124                init
-                0x000000000800014c                toggle
-                0x0000000008000168                delay_us
-                0x0000000008000194                main
- .text          0x00000000080001ac       0x9c vect.o
-                0x00000000080001ac                I_DMA2_2
-                0x00000000080001ac                I_ADC3
-                0x00000000080001ac                I_MNI
-                0x00000000080001ac                I_USB_HP_CAN_TX
-                0x00000000080001ac                I_Bus
-                0x00000000080001ac                I_DMA1_3
-                0x00000000080001ac                I_TIM8_UP
-                0x00000000080001ac                I_FLASH
-                0x00000000080001ac                I_WWDG
-                0x00000000080001ac                I_USART5
-                0x00000000080001ac                I_TIM1_UP
-                0x00000000080001ac                I_DMA1_2
-                0x00000000080001ac                I_EXTI9_5
-                0x00000000080001ac                I_TIM2
-                0x00000000080001ac                I_FSMC
-                0x00000000080001ac                I_EXTI2
-                0x00000000080001ac                I_CAN_SCE
-                0x00000000080001ac                I_RCC
-                0x00000000080001ac                I_I2C1_ER
-                0x00000000080001ac                I_EXTI0
-                0x00000000080001ac                I_EXTI1
-                0x00000000080001ac                I_TIM7
-                0x00000000080001ac                I_USART3
-                0x00000000080001ac                I_USART2
-                0x00000000080001ac                I_SPI1
-                0x00000000080001ac                I_SysTick
-                0x00000000080001ac                I_DMA2_3
-                0x00000000080001ac                I_EXTI4
-                0x00000000080001ac                I_TIM4
-                0x00000000080001ac                I_DMA1_5
-                0x00000000080001ac                I_DMA1_4
-                0x00000000080001ac                I_TIM8_CC
-                0x00000000080001ac                I_USB_LP_CAN_RX0
-                0x00000000080001ac                I_EXTI15_10
-                0x00000000080001ac                I_I2C2_ER
-                0x00000000080001ac                I_DMA2_1
-                0x00000000080001ac                I_Usage
-                0x00000000080001ac                I_HardFault
-                0x00000000080001ac                I_TAMPER
-                0x00000000080001ac                I_DebugMonitor
-                0x00000000080001ac                I_RTC
-                0x00000000080001ac                I_ADC1_2
-                0x00000000080001ac                I_TIM1_TRG_COM
-                0x00000000080001ac                I_USART1
-                0x00000000080001ac                I_TIM6
-                0x00000000080001ac                I_SPI2
-                0x00000000080001ac                I_USBWakeup
-                0x00000000080001ac                I_EXTI3
-                0x00000000080001ac                I_PendSV
-                0x00000000080001ac                I_TIM5
-                0x00000000080001ac                I_SVCall
-                0x00000000080001ac                I_DMA1_7
-                0x00000000080001ac                I_DMA1_6
-                0x00000000080001ac                I_Mem
-                0x00000000080001ac                I_SDIO
-                0x00000000080001ac                I_TIM3
-                0x00000000080001ac                I_TIM1_CC
-                0x00000000080001ac                I_DMA1_1
-                0x00000000080001ac                I_TIM1_BRK
-                0x00000000080001ac                I_RTCAlarm
-                0x00000000080001ac                I_DMA2_4_5
-                0x00000000080001ac                I_TIM8_BRK
-                0x00000000080001ac                I_SPI3
-                0x00000000080001ac                I_TIM8_TRG_COM
-                0x00000000080001ac                I_CAN_RX1
-                0x00000000080001ac                I_I2C1_EV
-                0x00000000080001ac                I_I2C2_EV
-                0x00000000080001ac                I_PVD
-                0x00000000080001ac                I_USART4
-                0x00000000080001ac                I_Default
-                0x00000000080001b2                I_Reset
-                0x0000000008000248                . = ALIGN (0x4)
+                0x0000000008000158                toggle
+                0x0000000008000174                delay_us
+                0x000000000800019e                main
+ .text          0x00000000080001b4       0x9c vect.o
+                0x00000000080001b4                I_DMA2_2
+                0x00000000080001b4                I_ADC3
+                0x00000000080001b4                I_MNI
+                0x00000000080001b4                I_USB_HP_CAN_TX
+                0x00000000080001b4                I_Bus
+                0x00000000080001b4                I_DMA1_3
+                0x00000000080001b4                I_TIM8_UP
+                0x00000000080001b4                I_FLASH
+                0x00000000080001b4                I_WWDG
+                0x00000000080001b4                I_USART5
+                0x00000000080001b4                I_TIM1_UP
+                0x00000000080001b4                I_DMA1_2
+                0x00000000080001b4                I_EXTI9_5
+                0x00000000080001b4                I_TIM2
+                0x00000000080001b4                I_FSMC
+                0x00000000080001b4                I_EXTI2
+                0x00000000080001b4                I_CAN_SCE
+                0x00000000080001b4                I_RCC
+                0x00000000080001b4                I_I2C1_ER
+                0x00000000080001b4                I_EXTI0
+                0x00000000080001b4                I_EXTI1
+                0x00000000080001b4                I_TIM7
+                0x00000000080001b4                I_USART3
+                0x00000000080001b4                I_USART2
+                0x00000000080001b4                I_SPI1
+                0x00000000080001b4                I_SysTick
+                0x00000000080001b4                I_DMA2_3
+                0x00000000080001b4                I_EXTI4
+                0x00000000080001b4                I_TIM4
+                0x00000000080001b4                I_DMA1_5
+                0x00000000080001b4                I_DMA1_4
+                0x00000000080001b4                I_TIM8_CC
+                0x00000000080001b4                I_USB_LP_CAN_RX0
+                0x00000000080001b4                I_EXTI15_10
+                0x00000000080001b4                I_I2C2_ER
+                0x00000000080001b4                I_DMA2_1
+                0x00000000080001b4                I_Usage
+                0x00000000080001b4                I_HardFault
+                0x00000000080001b4                I_TAMPER
+                0x00000000080001b4                I_DebugMonitor
+                0x00000000080001b4                I_RTC
+                0x00000000080001b4                I_ADC1_2
+                0x00000000080001b4                I_TIM1_TRG_COM
+                0x00000000080001b4                I_USART1
+                0x00000000080001b4                I_TIM6
+                0x00000000080001b4                I_SPI2
+                0x00000000080001b4                I_USBWakeup
+                0x00000000080001b4                I_EXTI3
+                0x00000000080001b4                I_PendSV
+                0x00000000080001b4                I_TIM5
+                0x00000000080001b4                I_SVCall
+                0x00000000080001b4                I_DMA1_7
+                0x00000000080001b4                I_DMA1_6
+                0x00000000080001b4                I_Mem
+                0x00000000080001b4                I_SDIO
+                0x00000000080001b4                I_TIM3
+                0x00000000080001b4                I_TIM1_CC
+                0x00000000080001b4                I_DMA1_1
+                0x00000000080001b4                I_TIM1_BRK
+                0x00000000080001b4                I_RTCAlarm
+                0x00000000080001b4                I_DMA2_4_5
+                0x00000000080001b4                I_TIM8_BRK
+                0x00000000080001b4                I_SPI3
+                0x00000000080001b4                I_TIM8_TRG_COM
+                0x00000000080001b4                I_CAN_RX1
+                0x00000000080001b4                I_I2C1_EV
+                0x00000000080001b4                I_I2C2_EV
+                0x00000000080001b4                I_PVD
+                0x00000000080001b4                I_USART4
+                0x00000000080001b4                I_Default
+                0x00000000080001ba                I_Reset
+                0x0000000008000250                . = ALIGN (0x4)
  *(.glue_7t)
- .glue_7t       0x0000000008000248        0x0 linker stubs
+ .glue_7t       0x0000000008000250        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x0000000008000248        0x0 linker stubs
+ .glue_7        0x0000000008000250        0x0 linker stubs
  *(.vfp11_veneer)
- .vfp11_veneer  0x0000000008000248        0x0 linker stubs
-                0x0000000008000248                . = ALIGN (0x4)
+ .vfp11_veneer  0x0000000008000250        0x0 linker stubs
+ *(.v4_bx)
+ .v4_bx         0x0000000008000250        0x0 linker stubs
+ *(.iplt)
+ .iplt          0x0000000008000250        0x0 main.o
+ *(.rel.dyn)
+                0x0000000008000250                . = ALIGN (0x4)
  *(.rodata)
-                0x0000000008000248                . = ALIGN (0x4)
-                0x0000000008000248                _etext = .
+ .rodata        0x0000000008000250        0x6 main.o
+                0x0000000008000258                . = ALIGN (0x4)
+ *fill*         0x0000000008000256        0x2 
+                0x0000000008000258                _etext = .
 
-.v4_bx          0x0000000008000248        0x0
- .v4_bx         0x0000000008000248        0x0 linker stubs
-
-.iplt           0x0000000008000248        0x0
- .iplt          0x0000000008000248        0x0 main.o
-
-.rel.dyn        0x0000000008000248        0x0
- .rel.iplt      0x0000000008000248        0x0 main.o
-
-.data           0x0000000020000000        0x0 load address 0x0000000008000248
+.data           0x0000000020000000        0x4 load address 0x0000000008000258
                 0x0000000020000000                _sdata = .
- *(.data)
- .data          0x0000000020000000        0x0 main.o
- .data          0x0000000020000000        0x0 vect.o
-                0x0000000020000000                . = ALIGN (0x4)
-                0x0000000020000000                _edata = .
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x0000000020000000        0x4 main.o
+                0x0000000020000000                testString
+ .data          0x0000000020000004        0x0 vect.o
+ *(.igot.plt)
+ .igot.plt      0x0000000020000004        0x0 main.o
+                0x0000000020000004                . = ALIGN (0x4)
+                0x0000000020000004                _edata = .
 
-.igot.plt       0x0000000020000000        0x0 load address 0x0000000008000248
- .igot.plt      0x0000000020000000        0x0 main.o
-
-.bss            0x0000000020000000        0x0 load address 0x0000000008000248
-                0x0000000020000000                _sbss = .
- *(.bss)
- .bss           0x0000000020000000        0x0 main.o
- .bss           0x0000000020000000        0x0 vect.o
-                0x0000000020000000                . = ALIGN (0x4)
-                0x0000000020000000                _ebss = .
-LOAD main.o
-LOAD vect.o
+.bss            0x0000000020000004        0x0 load address 0x000000000800025c
+                0x0000000020000004                _sbss = .
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x0000000020000004        0x0 main.o
+ .bss           0x0000000020000004        0x0 vect.o
+                0x0000000020000004                . = ALIGN (0x4)
+                0x0000000020000004                _ebss = .
 OUTPUT(firmware.elf elf32-littlearm)
 LOAD linker stubs
+
+.rel.dyn        0x0000000020000004        0x0 load address 0x000000000800025c
+ .rel.iplt      0x0000000020000004        0x0 main.o
 
 .comment        0x0000000000000000       0x12
  .comment       0x0000000000000000       0x12 main.o
