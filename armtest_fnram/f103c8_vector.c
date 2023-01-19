@@ -1,9 +1,6 @@
 #include <stdint.h>
 
-#define SRAM_START 0x20000000U
-#define SRAM_SIZE  (20U * 1024U) //20kb
-#define SRAM_END   ((SRAM_START) + (SRAM_SIZE))
-#define SSTART     SRAM_END
+#include "crash.h"
 
 extern uint32_t _stext;
 extern uint32_t _etext;
@@ -89,6 +86,11 @@ void I_DMA2_2(void) __attribute__ ((weak, alias("I_Default")));
 void I_DMA2_3(void) __attribute__ ((weak, alias("I_Default")));
 void I_DMA2_4_5(void) __attribute__ ((weak, alias("I_Default")));
 
+#define SRAM_START 0x20000000U
+#define SRAM_SIZE  (20U * 1024U) //20kb
+#define SRAM_END   ((SRAM_START) + (SRAM_SIZE))
+#define SSTART     SRAM_END
+
 uint32_t vectors[] __attribute__((section(".isr"))) = {
     SSTART,
     (uint32_t)&I_Reset,
@@ -169,38 +171,6 @@ void I_Default(void){
     while(1){};
 }
 
-void crashBlink(int iter){
-    //RCC->APB2ENR = enable GPIOA port
-    *((uint32_t*)(0x40021000 + 0x18)) = (uint32_t)(1<<3);
-    //config gpioa 0 to be output PP
-    *((uint32_t*)(0x40010C00 + 0x04)) = (uint32_t)(0x11000000);
-    while(1){
-        for(int j=0; j<iter; j++){
-            *((uint32_t*)(0x40010C00 + 0xc)) = (uint16_t)(1<<15);
-            for(int i=0; i<20000; i++){}
-            *((uint32_t*)(0x40010C00 + 0xc)) = 0;
-            for(int i=0; i<20000; i++){}
-        }
-        for(int i=0; i<1000000; i++){}
-    }
-}
-
-void I_CrashHardFault(void){
-    crashBlink(1);
-}
-
-void I_CrashMem(void){
-    crashBlink(2);
-}
-
-void I_CrashBus(void){
-    crashBlink(3);
-}
-
-void I_CrashUsage(void){
-    crashBlink(4);
-}
-
 void I_Reset(void){
     uint32_t sz_data = &_edata - &_sdata;
     //uint32_t sz_text = &_etext - &_stext;
@@ -224,4 +194,46 @@ void I_Reset(void){
     }
 
     main();
+}
+
+void I_CrashHardFault(void){
+    crashInit();
+    USART_str("Crash: HardFault\n");
+
+    USART_str("\nSYSHND_CTRL\n");
+    USART_hex(SYSHND_CTRL);
+
+    USART_str("\nNVIC_MFSR\n");
+    USART_hex(NVIC_MFSR);
+
+    USART_str("\nNVIC_BFSR\n");
+    USART_hex(NVIC_BFSR);
+
+    USART_str("\nNVIC_UFSR\n");
+    USART_hex(NVIC_UFSR);
+    
+    USART_str("\nNVIC_HFSR\n");
+    USART_hex(NVIC_HFSR);
+
+    USART_str("\nNVIC_DFSR\n");
+    USART_hex(NVIC_DFSR);
+
+    USART_str("\nNVIC_BFAR\n");
+    USART_hex(NVIC_BFAR);
+
+    USART_str("\nNVIC_AFSR\n");
+    USART_hex(NVIC_AFSR);
+    crashBlink(1);
+}
+
+void I_CrashMem(void){
+    crashBlink(2);
+}
+
+void I_CrashBus(void){
+    crashBlink(3);
+}
+
+void I_CrashUsage(void){
+    crashBlink(4);
 }

@@ -8,10 +8,13 @@ all: firmware.bin
 vect.o: f103c8_vector.c
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
+crash.o: crash.c
+	$(PRE)-gcc $(CFLAGS) -o $@ $^
+
 main.o: main.c
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-firmware.elf: main.o vect.o
+firmware.elf: main.o vect.o crash.o
 	$(PRE)-gcc $(LDFLAGS) -o $@ $^
 
 firmware.bin: firmware.elf

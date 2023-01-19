@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "crash.h"
 
 const char* testString = "Hello";
 
@@ -36,13 +37,15 @@ int main(void){
 	// // };
 
     //RCC->APB2ENR = enable GPIOA port
-    *((uint32_t*)(0x40021000 + 0x18)) = (uint32_t)(1<<3);
+    *((uint32_t*)(RCC + 0x18)) = (uint32_t)(1<<3);
         
     //config gpioa 0 to be output PP
-    *((uint32_t*)(0x40010C00 + 0x04)) = (uint32_t)(0x11000000);
+    *((uint32_t*)(GPIOB + 0x04)) = (uint32_t)(0x11000000);
 
+    crashInit();
+    USART_str("Hello\n");
     while(1){
-        *((uint32_t*)(0x40010C00 + 0xc)) = (uint16_t)(1<<14);
+        *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
         delay_us(200000);
         ramfn();
         delay_us(200000);
