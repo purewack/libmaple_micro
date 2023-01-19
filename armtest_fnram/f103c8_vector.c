@@ -227,13 +227,19 @@ void I_CrashHardFault(void){
 }
 
 void I_CrashMem(void){
-    crashBlink(2);
+    crashInit();
+    USART_str("Crash: MemFault\n");
+    crashBlink(2); 
 }
 
 void I_CrashBus(void){
+    crashInit();
+    USART_str("Crash: BusFault\n");
     crashBlink(3);
 }
 
 void I_CrashUsage(void){
+    crashInit();
+    USART_str("Crash: UsageFault\n");
     crashBlink(4);
 }
