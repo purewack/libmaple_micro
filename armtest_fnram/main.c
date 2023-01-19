@@ -45,9 +45,12 @@ int main(void){
     crashInit();
     USART_str("Hello\n");
     while(1){
+        USART_str("Toggle led\n");
         *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
         delay_us(200000);
+        USART_str("Try call ramfs\n");
         ramfn();
+        USART_str("Call ramfs done\n");
         delay_us(200000);
     }
 	return 0;
