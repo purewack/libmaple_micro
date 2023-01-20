@@ -45,5 +45,26 @@
                 "isDefault": true
             },
         },
+        
+        {
+            "type": "shell",
+            "label": "Serial Monitor",
+            "detail": "Display contents of serial data",
+            "windows":{
+                "command": "putty.exe -load \"com\"",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d", "/c"
+                        ]
+                    }
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
     ]
 }
