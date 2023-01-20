@@ -67,5 +67,17 @@
             },
         },
 
+        {
+            "type": "shell",
+            "label": "STM32 Chain",
+            "detail": "Chain commands to make, upload, serial monitor",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "ARM Clean",
+                "ARM Make",
+                "STM32 Upload",
+                "Serial Monitor"
+            ]
+        },
     ]
 }
