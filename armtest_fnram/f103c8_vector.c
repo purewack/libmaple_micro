@@ -2,14 +2,14 @@
 
 #include "crash.h"
 
-extern volatile uint32_t _stext;
-extern volatile uint32_t _etext;
-extern volatile uint32_t _sdata;
-extern volatile uint32_t _edata;
-extern volatile uint32_t _sbss;
-extern volatile uint32_t _ebss;
-extern volatile uint32_t _scart;
-extern volatile uint32_t _ecart;
+extern uint32_t _stext;
+extern uint32_t _etext;
+extern uint32_t _sdata;
+extern uint32_t _edata;
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+extern uint32_t _scart;
+extern uint32_t _ecart;
 
 int main(void);
 
@@ -172,16 +172,24 @@ void I_Default(void){
 }
 
 void I_Reset(void){
-    volatile uint32_t sz_data = &_edata - &_sdata;
-    volatile uint32_t sz_text = &_etext - &_stext;
-    volatile uint32_t sz_bss = &_ebss - &_sbss;
-    volatile uint32_t sz_cart = &_ecart - &_scart;
+    uint32_t tstart = (uint32_t)&_stext;
+    uint32_t tend = (uint32_t)&_etext;
+    uint32_t dstart = (uint32_t)&_sdata;
+    uint32_t dend = (uint32_t)&_edata;
+    uint32_t bstart = (uint32_t)&_sbss;
+    uint32_t bend = (uint32_t)&_ebss;
+    uint32_t cstart = (uint32_t)&_scart;
+    uint32_t cend = (uint32_t)&_ecart;
+    uint32_t sz_data = &_edata - &_sdata;
+    uint32_t sz_text = &_etext - &_stext;
+    uint32_t sz_bss = &_ebss - &_sbss;
+    uint32_t sz_cart = &_ecart - &_scart;
 
-    volatile uint8_t* bssDest = (uint8_t*)&_sbss;
-    volatile uint8_t* dataDest = (uint8_t*)&_sdata;
-    volatile uint8_t* dataSrc = (uint8_t*)&_etext;
-    volatile uint8_t* cartDest = (uint8_t*)&_scart;
-    volatile uint8_t* cartSrc = (uint8_t*)&_ebss;
+    uint32_t* bssDest = (uint32_t*)&_sbss;
+    uint32_t* dataDest = (uint32_t*)&_sdata;
+    uint32_t* dataSrc = (uint32_t*)&_etext;
+    uint32_t* cartDest = (uint32_t*)&_scart;
+    uint32_t* cartSrc = (uint32_t*)&_ebss;
 
     for(uint32_t i=0; i< sz_data; i++){
         *dataDest++ = *dataSrc++;
@@ -193,45 +201,53 @@ void I_Reset(void){
         *cartDest++ = *cartSrc++;
     }
 
-    crashInit();
-    cartDest = (uint8_t*)&_scart;
-    USART_str("\n.text start:");
-    USART_hex(_stext);
-    USART_str("\n.text end:");
-    USART_hex(_etext);
-    USART_str("\n.text size:");
+    crashInit(); 
+    USART_str("\n.text :");
+    USART_hex(tstart);
+    USART_str(" :: ");
+    USART_hex(tend);
+    USART_str(" #");
     USART_hex(sz_text);
-    
-    USART_str("\n.data start:");
-    USART_hex(_sdata);
-    USART_str("\n.data end:");
-    USART_hex(_edata);
-    USART_str("\n.data size:");
-    USART_hex(sz_data);
-    
-    USART_str("\n.bss start:");
-    USART_hex(_sbss);
-    USART_str("\n.bss end:");
-    USART_hex(_ebss);
-    USART_str("\n.bss size:");
-    USART_hex(sz_bss);
 
-    USART_str("\n.cart start:");
-    USART_hex(_scart);
-    USART_str("\n.cart end:");
-    USART_hex(_ecart);
-    USART_str("\n.cart size:");
-    USART_hex(sz_cart);
-    USART_str("\n.cart mem dump:\n");
+    USART_str("\n.data :");
+    USART_hex(dstart);
+    USART_str(" :: ");
+    USART_hex(dend);
+    USART_str(" #");
+    USART_hex(sz_data);
+
+    USART_str("\n.bss :");
+    USART_hex(bstart);
+    USART_str(" :: ");
+    USART_hex(bend);
+    USART_str(" #");
+    USART_hex(sz_bss);
     
-    for(uint32_t i=0; i< sz_cart; i++){
-        USART_str("@:");
-        USART_hex((uint32_t)&cartDest);
+    USART_str("\n.cart :");
+    USART_hex(cstart);
+    USART_str(" :: ");
+    USART_hex(cend);
+    USART_str(" #");
+    USART_hex(sz_cart);
+    USART_str("\n#\n");
+    
+    cartDest = (uint32_t*) 0x20000000;
+    for(uint32_t i=0; i< 8; i++){
         USART_str(" :: ");
         USART_hex(*cartDest);
         USART_str("\n");
         cartDest++;
     }
+    
+    cartDest = (uint32_t*) 0x20000800;
+    USART_str("\nram dump :\n");
+    for(uint32_t i=0; i< 8; i++){
+        USART_str(" :: ");
+        USART_hex(*cartDest);
+        USART_str("\n");
+        cartDest++;
+    }
+
 
     main();
 }

@@ -21,13 +21,13 @@ uint32_t v = 0x123abc;
 
 __attribute__((section(".cart"))) 
 void ramfn() {
-    *((uint32_t*)(0x40010C00 + 0xc)) = 0;
+    USART_str("[ Ramfs call() ]\n");
 } 
 
 
 int main(void){
     
-    USART_str("Hello\n");
+    USART_str("\n\t##########Hello\n");
     USART_hex(v);
     USART_str("\n");
     USART_bin(v,32);
