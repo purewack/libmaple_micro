@@ -36,7 +36,7 @@ void USART_hex(uint32_t val){
     for(int i=0; i<nibs; i++){
         int sh = 4*(8-1-i);
         int nib = (val & (0xf<<sh)) >> sh;
-        char c = (nib < 0xa) ? '0'+nib : 'a'+nib-0xa;
+        char c = (nib < 0xa) ? '0'+nib : 'A'+nib-0xa;
         USART_char(c);
     }
 }

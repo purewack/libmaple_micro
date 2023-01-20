@@ -13,125 +13,125 @@ LOAD main.o
 LOAD vect.o
 LOAD crash.o
 
-.text           0x0000000008000000      0x72c
+.text           0x0000000008000000      0x968
                 0x0000000008000000                _stext = .
  *(.isr)
  .isr           0x0000000008000000      0x124 vect.o
                 0x0000000008000000                vectors
                 0x0000000008000124                . = ALIGN (0x4)
  *(.text .text.* .gnu.linkonce.t.*)
- .text          0x0000000008000124       0x94 main.o
+ .text          0x0000000008000124       0xa4 main.o
                 0x0000000008000124                delay_us
                 0x000000000800014e                main
- .text          0x00000000080001b8      0x204 vect.o
-                0x00000000080001b8                I_DMA2_2
-                0x00000000080001b8                I_ADC3
-                0x00000000080001b8                I_MNI
-                0x00000000080001b8                I_USB_HP_CAN_TX
-                0x00000000080001b8                I_SPI2
-                0x00000000080001b8                I_DMA1_3
-                0x00000000080001b8                I_TIM8_UP
-                0x00000000080001b8                I_FLASH
-                0x00000000080001b8                I_WWDG
-                0x00000000080001b8                I_USART5
-                0x00000000080001b8                I_TIM1_UP
-                0x00000000080001b8                I_DMA1_2
-                0x00000000080001b8                I_EXTI9_5
-                0x00000000080001b8                I_TIM2
-                0x00000000080001b8                I_FSMC
-                0x00000000080001b8                I_EXTI2
-                0x00000000080001b8                I_CAN_SCE
-                0x00000000080001b8                I_RCC
-                0x00000000080001b8                I_I2C1_ER
-                0x00000000080001b8                I_EXTI0
-                0x00000000080001b8                I_EXTI1
-                0x00000000080001b8                I_TIM7
-                0x00000000080001b8                I_USART3
-                0x00000000080001b8                I_USART2
-                0x00000000080001b8                I_SPI1
-                0x00000000080001b8                I_SysTick
-                0x00000000080001b8                I_USART4
-                0x00000000080001b8                I_DMA2_3
-                0x00000000080001b8                I_EXTI4
-                0x00000000080001b8                I_TIM4
-                0x00000000080001b8                I_DMA1_5
-                0x00000000080001b8                I_DMA1_4
-                0x00000000080001b8                I_TIM8_CC
-                0x00000000080001b8                I_USB_LP_CAN_RX0
-                0x00000000080001b8                I_EXTI15_10
-                0x00000000080001b8                I_I2C2_ER
-                0x00000000080001b8                I_DMA2_1
-                0x00000000080001b8                I_Default
-                0x00000000080001b8                I_PVD
-                0x00000000080001b8                I_TAMPER
-                0x00000000080001b8                I_DebugMonitor
-                0x00000000080001b8                I_RTC
-                0x00000000080001b8                I_ADC1_2
-                0x00000000080001b8                I_TIM1_TRG_COM
-                0x00000000080001b8                I_USART1
-                0x00000000080001b8                I_TIM6
-                0x00000000080001b8                I_I2C2_EV
-                0x00000000080001b8                I_USBWakeup
-                0x00000000080001b8                I_EXTI3
-                0x00000000080001b8                I_PendSV
-                0x00000000080001b8                I_TIM5
-                0x00000000080001b8                I_SVCall
-                0x00000000080001b8                I_DMA1_7
-                0x00000000080001b8                I_DMA1_6
-                0x00000000080001b8                I_I2C1_EV
-                0x00000000080001b8                I_SDIO
-                0x00000000080001b8                I_TIM3
-                0x00000000080001b8                I_CAN_RX1
-                0x00000000080001b8                I_TIM1_CC
-                0x00000000080001b8                I_DMA1_1
-                0x00000000080001b8                I_TIM8_TRG_COM
-                0x00000000080001b8                I_TIM1_BRK
-                0x00000000080001b8                I_RTCAlarm
-                0x00000000080001b8                I_DMA2_4_5
-                0x00000000080001b8                I_TIM8_BRK
-                0x00000000080001b8                I_SPI3
-                0x00000000080001be                I_Reset
-                0x0000000008000284                I_CrashHardFault
-                0x0000000008000284                I_HardFault
-                0x0000000008000368                I_Mem
-                0x0000000008000368                I_CrashMem
-                0x0000000008000384                I_Bus
-                0x0000000008000384                I_CrashBus
-                0x00000000080003a0                I_CrashUsage
-                0x00000000080003a0                I_Usage
- .text          0x00000000080003bc      0x268 crash.o
-                0x00000000080003bc                crashBlink
-                0x0000000008000430                USART_char
-                0x0000000008000468                USART_str
-                0x0000000008000492                USART_bin
-                0x00000000080004f0                USART_hex
-                0x0000000008000568                crashInit
- *fill*         0x0000000008000624        0x4 
- .text.__stub   0x0000000008000628        0x8 linker stubs
-                0x0000000008000630                . = ALIGN (0x4)
+ .text          0x00000000080001c8      0x35c vect.o
+                0x00000000080001c8                I_DMA2_2
+                0x00000000080001c8                I_ADC3
+                0x00000000080001c8                I_MNI
+                0x00000000080001c8                I_USB_HP_CAN_TX
+                0x00000000080001c8                I_SPI2
+                0x00000000080001c8                I_DMA1_3
+                0x00000000080001c8                I_TIM8_UP
+                0x00000000080001c8                I_FLASH
+                0x00000000080001c8                I_WWDG
+                0x00000000080001c8                I_USART5
+                0x00000000080001c8                I_TIM1_UP
+                0x00000000080001c8                I_DMA1_2
+                0x00000000080001c8                I_EXTI9_5
+                0x00000000080001c8                I_TIM2
+                0x00000000080001c8                I_FSMC
+                0x00000000080001c8                I_EXTI2
+                0x00000000080001c8                I_CAN_SCE
+                0x00000000080001c8                I_RCC
+                0x00000000080001c8                I_I2C1_ER
+                0x00000000080001c8                I_EXTI0
+                0x00000000080001c8                I_EXTI1
+                0x00000000080001c8                I_TIM7
+                0x00000000080001c8                I_USART3
+                0x00000000080001c8                I_USART2
+                0x00000000080001c8                I_SPI1
+                0x00000000080001c8                I_SysTick
+                0x00000000080001c8                I_USART4
+                0x00000000080001c8                I_DMA2_3
+                0x00000000080001c8                I_EXTI4
+                0x00000000080001c8                I_TIM4
+                0x00000000080001c8                I_DMA1_5
+                0x00000000080001c8                I_DMA1_4
+                0x00000000080001c8                I_TIM8_CC
+                0x00000000080001c8                I_USB_LP_CAN_RX0
+                0x00000000080001c8                I_EXTI15_10
+                0x00000000080001c8                I_I2C2_ER
+                0x00000000080001c8                I_DMA2_1
+                0x00000000080001c8                I_Default
+                0x00000000080001c8                I_PVD
+                0x00000000080001c8                I_TAMPER
+                0x00000000080001c8                I_DebugMonitor
+                0x00000000080001c8                I_RTC
+                0x00000000080001c8                I_ADC1_2
+                0x00000000080001c8                I_TIM1_TRG_COM
+                0x00000000080001c8                I_USART1
+                0x00000000080001c8                I_TIM6
+                0x00000000080001c8                I_I2C2_EV
+                0x00000000080001c8                I_USBWakeup
+                0x00000000080001c8                I_EXTI3
+                0x00000000080001c8                I_PendSV
+                0x00000000080001c8                I_TIM5
+                0x00000000080001c8                I_SVCall
+                0x00000000080001c8                I_DMA1_7
+                0x00000000080001c8                I_DMA1_6
+                0x00000000080001c8                I_I2C1_EV
+                0x00000000080001c8                I_SDIO
+                0x00000000080001c8                I_TIM3
+                0x00000000080001c8                I_CAN_RX1
+                0x00000000080001c8                I_TIM1_CC
+                0x00000000080001c8                I_DMA1_1
+                0x00000000080001c8                I_TIM8_TRG_COM
+                0x00000000080001c8                I_TIM1_BRK
+                0x00000000080001c8                I_RTCAlarm
+                0x00000000080001c8                I_DMA2_4_5
+                0x00000000080001c8                I_TIM8_BRK
+                0x00000000080001c8                I_SPI3
+                0x00000000080001ce                I_Reset
+                0x00000000080003ec                I_CrashHardFault
+                0x00000000080003ec                I_HardFault
+                0x00000000080004d0                I_Mem
+                0x00000000080004d0                I_CrashMem
+                0x00000000080004ec                I_Bus
+                0x00000000080004ec                I_CrashBus
+                0x0000000008000508                I_CrashUsage
+                0x0000000008000508                I_Usage
+ .text          0x0000000008000524      0x268 crash.o
+                0x0000000008000524                crashBlink
+                0x0000000008000598                USART_char
+                0x00000000080005d0                USART_str
+                0x00000000080005fa                USART_bin
+                0x0000000008000658                USART_hex
+                0x00000000080006d0                crashInit
+ *fill*         0x000000000800078c        0x4 
+ .text.__stub   0x0000000008000790        0x8 linker stubs
+                0x0000000008000798                . = ALIGN (0x4)
  *(.glue_7t)
- .glue_7t       0x0000000008000630        0x0 linker stubs
+ .glue_7t       0x0000000008000798        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x0000000008000630        0x0 linker stubs
+ .glue_7        0x0000000008000798        0x0 linker stubs
  *(.vfp11_veneer)
- .vfp11_veneer  0x0000000008000630        0x0 linker stubs
+ .vfp11_veneer  0x0000000008000798        0x0 linker stubs
  *(.v4_bx)
- .v4_bx         0x0000000008000630        0x0 linker stubs
+ .v4_bx         0x0000000008000798        0x0 linker stubs
  *(.iplt)
- .iplt          0x0000000008000630        0x0 main.o
+ .iplt          0x0000000008000798        0x0 main.o
  *(.rel.dyn)
-                0x0000000008000630                . = ALIGN (0x4)
+                0x0000000008000798                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0000000008000630       0x3d main.o
- *fill*         0x000000000800066d        0x3 
- .rodata        0x0000000008000670       0xb3 vect.o
- *fill*         0x0000000008000723        0x1 
- .rodata        0x0000000008000724        0x7 crash.o
-                0x000000000800072c                . = ALIGN (0x4)
- *fill*         0x000000000800072b        0x1 
-                0x000000000800072c                _etext = .
+ .rodata        0x0000000008000798       0x41 main.o
+ *fill*         0x00000000080007d9        0x3 
+ .rodata        0x00000000080007dc      0x183 vect.o
+ *fill*         0x000000000800095f        0x1 
+ .rodata        0x0000000008000960        0x7 crash.o
+                0x0000000008000968                . = ALIGN (0x4)
+ *fill*         0x0000000008000967        0x1 
+                0x0000000008000968                _etext = .
 
-.data           0x0000000020000800        0x8 load address 0x000000000800072c
+.data           0x0000000020000800        0x8 load address 0x0000000008000968
                 0x0000000020000800                _sdata = .
  *(.data .data.* .gnu.linkonce.d.*)
  .data          0x0000000020000800        0x8 main.o
@@ -144,7 +144,7 @@ LOAD crash.o
                 0x0000000020000808                . = ALIGN (0x4)
                 0x0000000020000808                _edata = .
 
-.bss            0x0000000020000808        0x0 load address 0x0000000008000734
+.bss            0x0000000020000808        0x0 load address 0x0000000008000970
                 0x0000000020000808                _sbss = .
  *(.bss .bss.* .gnu.linkonce.b.*)
  .bss           0x0000000020000808        0x0 main.o
@@ -154,7 +154,7 @@ LOAD crash.o
                 0x0000000020000808                . = ALIGN (0x4)
                 0x0000000020000808                _ebss = .
 
-.cart           0x0000000020000000       0x18 load address 0x0000000008000734
+.cart           0x0000000020000000       0x18 load address 0x0000000008000970
                 0x0000000020000000                _scart = .
  *(.cart)
  .cart          0x0000000020000000       0x18 main.o
@@ -164,7 +164,7 @@ LOAD crash.o
 OUTPUT(firmware.elf elf32-littlearm)
 LOAD linker stubs
 
-.rel.dyn        0x0000000020000018        0x0 load address 0x000000000800074c
+.rel.dyn        0x0000000020000018        0x0 load address 0x0000000008000988
  .rel.iplt      0x0000000020000018        0x0 main.o
 
 .comment        0x0000000000000000       0x12
