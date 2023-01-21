@@ -26,6 +26,13 @@ SECTIONS
         . = ALIGN(4);
         _etext = .;
     }> FLASH
+    
+    .cart : {
+        _scart = .;
+        *(.cart .cart.*) 
+        . = ALIGN(4);
+        _ecart = .;
+    }> CART AT> FLASH
 
     .data : {
         _sdata = .;
@@ -43,10 +50,4 @@ SECTIONS
         _ebss = .;
     }> SRAM
 
-    .cart : {
-        _scart = .;
-        *(.cart) 
-        . = ALIGN(4);
-        _ecart = .;
-    }> CART AT> FLASH
 }
