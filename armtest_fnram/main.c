@@ -22,6 +22,7 @@ uint32_t v = 0x123abc;
 __attribute__((section(".cart"))) 
 void ramfn() {
     USART_str("[ Ramfs call() ]\n");
+        *((uint32_t*)(GPIOB + 0xc)) = 0;
 } 
 
 

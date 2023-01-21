@@ -185,11 +185,11 @@ void I_Reset(void){
     uint32_t sz_bss = &_ebss - &_sbss;
     uint32_t sz_cart = &_ecart - &_scart;
 
-    uint32_t* bssDest = (uint32_t*)&_sbss;
-    uint32_t* dataDest = (uint32_t*)&_sdata;
-    uint32_t* dataSrc = (uint32_t*)&_ecart;
     uint32_t* cartDest = (uint32_t*)&_scart;
     uint32_t* cartSrc = (uint32_t*)&_etext;
+    uint32_t* dataDest = (uint32_t*)&_sdata;
+    uint32_t* dataSrc = (uint32_t*)&_etext+sz_cart;
+    uint32_t* bssDest = (uint32_t*)&_sbss;
 
     for(uint32_t i=0; i< sz_data; i++){
         *dataDest++ = *dataSrc++;
