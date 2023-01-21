@@ -18,12 +18,22 @@ void delay_us(uint32_t us) {
 
 
 uint32_t v = 0x123abc;
+uint32_t vv = 0xbeef;
 
-__attribute__((section(".cart"))) 
+void ramfn() __attribute__ ((section (".cart")));
+void ramfn2() __attribute__ ((section (".cart")));
+
 void ramfn() {
-    USART_str("[ Ramfs call() ]\n");
+    USART_str(" ramfn() \n");
         *((uint32_t*)(GPIOB + 0xc)) = 0;
-} 
+}
+
+void ramfn2() {
+    USART_str(" ramfn2() {\n");
+    USART_hex(vv);
+    USART_str("\n}\n");
+    vv++;
+}
 
 
 int main(void){
@@ -37,9 +47,8 @@ int main(void){
         USART_str("Toggle led\n");
         *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
         delay_us(200000);
-        USART_str("Try call ramfs\n");
         ramfn();
-        USART_str("Call ramfs done\n");
+        ramfn2();
         delay_us(200000);
     }
 	return 0;
