@@ -8,8 +8,13 @@ extern uint32_t _sdata;
 extern uint32_t _edata;
 extern uint32_t _sbss;
 extern uint32_t _ebss;
+
 extern uint32_t _scart;
 extern uint32_t _ecart;
+extern uint32_t _scdata;
+extern uint32_t _ecdata;
+extern uint32_t _scbss;
+extern uint32_t _ecbss;
 
 int main(void);
 
@@ -172,24 +177,24 @@ void I_Default(void){
 }
 
 void I_Reset(void){
-    uint32_t tstart = (uint32_t)&_stext;
-    uint32_t tend = (uint32_t)&_etext;
-    uint32_t dstart = (uint32_t)&_sdata;
-    uint32_t dend = (uint32_t)&_edata;
-    uint32_t bstart = (uint32_t)&_sbss;
-    uint32_t bend = (uint32_t)&_ebss;
-    uint32_t cstart = (uint32_t)&_scart;
-    uint32_t cend = (uint32_t)&_ecart;
+    //uint32_t sz_text = &_etext - &_stext;
     uint32_t sz_data = &_edata - &_sdata;
-    uint32_t sz_text = &_etext - &_stext;
-    uint32_t sz_bss = &_ebss - &_sbss;
-    uint32_t sz_cart = &_ecart - &_scart;
+    uint32_t sz_bss  = &_ebss  - &_sbss;
 
-    uint32_t* cartDest = (uint32_t*)&_scart;
-    uint32_t* cartSrc = (uint32_t*)&_etext;
-    uint32_t* dataDest = (uint32_t*)&_sdata;
-    uint32_t* dataSrc = (uint32_t*)&_etext+sz_cart;
-    uint32_t* bssDest = (uint32_t*)&_sbss;
+    uint32_t sz_cart = &_ecart - &_scart;
+    uint32_t sz_cdata = &_ecdata - &_scdata;
+    uint32_t sz_cbss = &_ecbss - &_scbss;
+
+    uint32_t* cartSrc   = (uint32_t*)&_etext;
+    uint32_t* cdataSrc  = (uint32_t*)&_etext+sz_cart;
+    uint32_t* cbssSrc   = (uint32_t*)&_etext+sz_cart+sz_cdata;
+    uint32_t* dataSrc   = (uint32_t*)&_etext+sz_cart+sz_cdata+sz_cbss;
+
+    uint32_t* cartDest  = (uint32_t*)&_scart;
+    uint32_t* cdataDest = (uint32_t*)&_scdata;
+    uint32_t* cbssDest  = (uint32_t*)&_scbss;
+    uint32_t* dataDest  = (uint32_t*)&_sdata;
+    uint32_t* bssDest   = (uint32_t*)&_sbss;
 
     for(uint32_t i=0; i< sz_data; i++){
         *dataDest++ = *dataSrc++;
@@ -200,52 +205,35 @@ void I_Reset(void){
     for(uint32_t i=0; i< sz_cart; i++){
         *cartDest++ = *cartSrc++;
     }
+    for(uint32_t i=0; i< sz_cdata; i++){
+        *cdataDest++ = *cdataSrc++;
+    }
+    for(uint32_t i=0; i< sz_cbss; i++){
+        *cbssDest++ = 0;
+    }
 
-    crashInit(); 
-    USART_str("\n.text :");
-    USART_hex(tstart);
-    USART_str(" :: ");
-    USART_hex(tend);
-    USART_str(" #");
-    USART_hex(sz_text);
-
-    USART_str("\n.data :");
-    USART_hex(dstart);
-    USART_str(" :: ");
-    USART_hex(dend);
-    USART_str(" #");
-    USART_hex(sz_data);
-
-    USART_str("\n.bss  :");
-    USART_hex(bstart);
-    USART_str(" :: ");
-    USART_hex(bend);
-    USART_str(" #");
-    USART_hex(sz_bss);
-    
-    USART_str("\n.cart :");
-    USART_hex(cstart);
-    USART_str(" :: ");
-    USART_hex(cend);
-    USART_str(" #");
-    USART_hex(sz_cart);
-    USART_str("\n#\n");
-    
-    for(uint32_t i=0; i< 32; i+=4){
+    crashInit();
+    USART_str("\nram dump 0x0x20000000:128\n");
+    for(uint32_t i=0; i< 128; i+=4){
         USART_hex(0x20000000 + i);
         USART_str(" :: ");
         USART_hex(*((uint32_t*)(0x20000000+i)));
         USART_str("\n");
     }
-    
-    USART_str("\nram dump :\n");
-    for(uint32_t i=0; i< 32; i+=4){
+    USART_str("\nram dump 0x0x20000800:128\n");
+    for(uint32_t i=0; i< 128; i+=4){
         USART_hex(0x20000800 + i);
         USART_str(" :: ");
         USART_hex(*((uint32_t*)(0x20000800+i)));
         USART_str("\n");
     }
-
+    USART_str("\nram dump 0x0x20001000:128\n");
+    for(uint32_t i=0; i< 128; i+=4){
+        USART_hex(0x20001000 + i);
+        USART_str(" :: ");
+        USART_hex(*((uint32_t*)(0x20001000+i)));
+        USART_str("\n");
+    }
 
     main();
 }

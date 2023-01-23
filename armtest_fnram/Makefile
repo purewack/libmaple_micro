@@ -1,7 +1,8 @@
+TARGET=firmware
 PRE=arm-none-eabi
 MACH=cortex-m3
 CFLAGS= -c -mcpu=$(MACH) -mthumb -mfloat-abi=soft -std=gnu11 -Wall -o0
-LDFLAGS = -mcpu=$(MACH) -mthumb -mfloat-abi=soft -nostdlib -T f103c8.ld -Wl,-Map=output.map
+LDFLAGS = -mcpu=$(MACH) -mthumb -mfloat-abi=soft -nostdlib -T f103c8.ld -Wl,-Map=$(TARGET).map
 
 all: firmware.bin
 
@@ -17,11 +18,11 @@ main.o: main.c
 firmware.elf: main.o vect.o crash.o
 	$(PRE)-gcc $(LDFLAGS) -o $@ $^
 
-firmware.bin: firmware.elf
-	$(PRE)-objcopy -v -O binary $^ $@ 
+firmware.bin: $(TARGET).elf
+	$(PRE)-objcopy -v -O binary $^ $@; $(PRE)-objdump -D -h $(TARGET).elf > $(TARGET).dias
 
 clean:
 	rm -rf *.o *.elf *.bin
 
 dis:
-	$(PRE)-objdump -D -h firmware.elf
+	$(PRE)-objdump -D -h $(TARGET).elf > $(TARGET).dias
