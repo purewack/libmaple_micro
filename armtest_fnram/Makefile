@@ -31,4 +31,4 @@ $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
 	$(PRE)-objcopy -v -O binary $^ $@ 
 	
 clean:
-	rm -rf $(BUILD_DIR)/*.o $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.dias $(BUILD_DIR)/*.nm
+	rm -rf $(BUILD_DIR)/*.o $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.dias $(BUILD_DIR)/*.nm $(BUILD_DIR)/*.map

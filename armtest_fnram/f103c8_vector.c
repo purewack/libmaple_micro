@@ -1,20 +1,7 @@
 #include <stdint.h>
 
 #include "crash.h"
-
-extern uint32_t _stext;
-extern uint32_t _etext;
-extern uint32_t _sdata;
-extern uint32_t _edata;
-extern uint32_t _sbss;
-extern uint32_t _ebss;
-
-extern uint32_t _scart;
-extern uint32_t _ecart;
-extern uint32_t _scdata;
-extern uint32_t _ecdata;
-extern uint32_t _scbss;
-extern uint32_t _ecbss;
+#include "common.h"
 
 int main(void);
 
