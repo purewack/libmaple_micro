@@ -1,5 +1,1 @@
-*.o
-*.map
-*.elf
-*.bin
-*.dias
+build
