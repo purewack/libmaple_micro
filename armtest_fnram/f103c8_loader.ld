@@ -3,9 +3,7 @@ ENTRY(I_Reset)
 MEMORY
 {
     FLASH(rx): ORIGIN = 0x08000000, LENGTH = 128K
-    CART(rwx): ORIGIN = 0x20000000, LENGTH = 2k
-    CRAM(rwx): ORIGIN = 0x20000800, LENGTH = 2k
-    SRAM(rwx): ORIGIN = 0x20001000, LENGTH = 16k
+    SRAM(rwx): ORIGIN = 0x20000000, LENGTH = 4k
 }
 
 SECTIONS
@@ -28,27 +26,6 @@ SECTIONS
         _etext = .;
     }> FLASH
     
-    .cart : {
-        _scart = .;
-        *(.cart)
-        . = ALIGN(4);
-        _ecart = .;
-    }> CART AT> FLASH
-
-    .cdata : {
-        _scdata = .;
-        *(.cdata) 
-        . = ALIGN(4);
-        _ecdata = .;
-    }> CRAM AT> FLASH
-
-    .cbss : {
-        _scbss = .;
-        *(.cbss) 
-        . = ALIGN(4);
-        _ecbss = .;
-    }> CRAM AT> FLASH
-
     .data : {
         _sdata = .;
         *(.data .data.* .gnu.linkonce.d.*)

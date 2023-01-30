@@ -1,7 +1,6 @@
 #include <stdint.h>
 
-#include "crash.h"
-#include "common.h"
+#include "libnumcalcium.h"
 
 int main(void);
 
@@ -79,7 +78,7 @@ void I_DMA2_3(void) __attribute__ ((weak, alias("I_Default")));
 void I_DMA2_4_5(void) __attribute__ ((weak, alias("I_Default")));
 
 #define SRAM_START 0x20000000U
-#define SRAM_SIZE  (20U * 1024U) //20kb
+#define SRAM_SIZE  (4U * 1024U)
 #define SRAM_END   ((SRAM_START) + (SRAM_SIZE))
 #define SSTART     SRAM_END
 
@@ -167,19 +166,7 @@ void I_Reset(void){
     //uint32_t sz_text = &_etext - &_stext;
     uint32_t sz_data = &_edata - &_sdata;
     uint32_t sz_bss  = &_ebss  - &_sbss;
-
-    uint32_t sz_cart = &_ecart - &_scart;
-    uint32_t sz_cdata = &_ecdata - &_scdata;
-    uint32_t sz_cbss = &_ecbss - &_scbss;
-
-    uint32_t* cartSrc   = (uint32_t*)&_etext;
-    uint32_t* cdataSrc  = (uint32_t*)&_etext+sz_cart;
-    uint32_t* cbssSrc   = (uint32_t*)&_etext+sz_cart+sz_cdata;
-    uint32_t* dataSrc   = (uint32_t*)&_etext+sz_cart+sz_cdata+sz_cbss;
-
-    uint32_t* cartDest  = (uint32_t*)&_scart;
-    uint32_t* cdataDest = (uint32_t*)&_scdata;
-    uint32_t* cbssDest  = (uint32_t*)&_scbss;
+    uint32_t* dataSrc   = (uint32_t*)&_etext;
     uint32_t* dataDest  = (uint32_t*)&_sdata;
     uint32_t* bssDest   = (uint32_t*)&_sbss;
 
@@ -189,86 +176,34 @@ void I_Reset(void){
     for(uint32_t i=0; i< sz_bss; i++){
         *bssDest++ = 0;
     }
-    for(uint32_t i=0; i< sz_cart; i++){
-        *cartDest++ = *cartSrc++;
-    }
-    for(uint32_t i=0; i< sz_cdata; i++){
-        *cdataDest++ = *cdataSrc++;
-    }
-    for(uint32_t i=0; i< sz_cbss; i++){
-        *cbssDest++ = 0;
-    }
-
-    crashInit();
-    USART_str("\nram dump 0x0x20000000:128\n");
-    for(uint32_t i=0; i< 128; i+=4){
-        USART_hex(0x20000000 + i);
-        USART_str(" :: ");
-        USART_hex(*((uint32_t*)(0x20000000+i)));
-        USART_str("\n");
-    }
-    USART_str("\nram dump 0x0x20000800:128\n");
-    for(uint32_t i=0; i< 128; i+=4){
-        USART_hex(0x20000800 + i);
-        USART_str(" :: ");
-        USART_hex(*((uint32_t*)(0x20000800+i)));
-        USART_str("\n");
-    }
-    USART_str("\nram dump 0x0x20001000:128\n");
-    for(uint32_t i=0; i< 128; i+=4){
-        USART_hex(0x20001000 + i);
-        USART_str(" :: ");
-        USART_hex(*((uint32_t*)(0x20001000+i)));
-        USART_str("\n");
-    }
 
     main();
 }
 
 void I_CrashHardFault(void){
-    crashInit();
+    USART_force_init();
     USART_str("Crash: HardFault\n");
-
-    USART_str("\nSYSHND_CTRL\n");
-    USART_hex(SYSHND_CTRL);
-
-    USART_str("\nNVIC_MFSR\n");
-    USART_hex(NVIC_MFSR);
-
-    USART_str("\nNVIC_BFSR\n");
-    USART_hex(NVIC_BFSR);
-
-    USART_str("\nNVIC_UFSR\n");
-    USART_hex(NVIC_UFSR);
-    
-    USART_str("\nNVIC_HFSR\n");
-    USART_hex(NVIC_HFSR);
-
-    USART_str("\nNVIC_DFSR\n");
-    USART_hex(NVIC_DFSR);
-
-    USART_str("\nNVIC_BFAR\n");
-    USART_hex(NVIC_BFAR);
-
-    USART_str("\nNVIC_AFSR\n");
-    USART_hex(NVIC_AFSR);
+    USART_crash_registers();
     crashBlink(1);
 }
 
 void I_CrashMem(void){
-    crashInit();
+    USART_force_init();
     USART_str("Crash: MemFault\n");
+    USART_crash_registers();
     crashBlink(2); 
 }
 
 void I_CrashBus(void){
-    crashInit();
+    USART_force_init();
     USART_str("Crash: BusFault\n");
+    USART_crash_registers();
     crashBlink(3);
 }
 
 void I_CrashUsage(void){
-    crashInit();
+    USART_force_init();
     USART_str("Crash: UsageFault\n");
+    USART_crash_registers();
     crashBlink(4);
 }

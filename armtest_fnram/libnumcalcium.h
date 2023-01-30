@@ -1,7 +1,21 @@
-#ifndef CRASH_HEADER
-#define CRASH_HEADER
+#ifndef COMMON_H
+#define COMMON_H
 
 #include <stdint.h>
+extern uint32_t _stext;
+extern uint32_t _etext;
+extern uint32_t _sdata;
+extern uint32_t _edata;
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+
+extern uint32_t _scart;
+extern uint32_t _ecart;
+extern uint32_t _scdata;
+extern uint32_t _ecdata;
+extern uint32_t _scbss;
+extern uint32_t _ecbss;
+
 
 /*********************************************************************
 *
@@ -31,12 +45,23 @@
 #define GPIOB   0x40010C00
 #define USART1  0x40013800
 
+//blocking blink function triggered on fault
+void crashBlink(int blink_count);
+//init usart for posting error messages on fault
+void crashInit();
+//post register contents relating to crash
+void USART_crash_registers();
+
+void USART_force_init();
 void USART_char(char c);
 void USART_str(const char* str);
 void USART_bin(uint32_t val, uint8_t bits);
 void USART_hex(uint32_t val);
+int USART_rx();
+unsigned char USART_read();
+unsigned char USART_get();
 
-void crashBlink(int iter);
-void crashInit();
+void delay_us(uint32_t us);
+void post_libstatus();
 
 #endif
