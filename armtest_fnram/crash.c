@@ -94,13 +94,13 @@ void USART_hex(uint32_t val){
     }
 }
 
-int USART_rx(){
-    return (*((uint32_t*)(USART1 + 0x00)) &= (1<<5));
+uint32_t USART_rx(){
+    return (*((uint32_t*)(USART1 + 0x00)) & (1<<5));
 }
 unsigned char USART_read(){
     return (uint8_t)*((uint32_t*)(USART1 + 0x04));
 }
 unsigned char USART_get(){
-    while(! USART_rx()){}
+    while(USART_rx() == 0){}
     return USART_read();
 }

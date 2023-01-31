@@ -17,20 +17,29 @@ void delay_us(uint32_t us) {
                  : "r0");
 }
 
-volatile char read[256];
-volatile int r = 0;
+volatile unsigned char read[256];
+volatile unsigned char r = 0;
+volatile unsigned char ch = 0;
 
 int main(void){
     
     USART_force_init();
     USART_str("\nlibnumcalcium loader echo:\n");
+    r = 0;
     while(1){
-        if(read[r] == '\n'){
-            USART_str(read);
+        ch = (int)USART_get();
+        read[r] = ch;
+        r++;
+        if(ch == '\n'){
+            USART_str("[\n");
+            for(int i=0; i<r; i++){
+                USART_hex(read[i]);
+                USART_str("\n");
+                read[i] = 0;
+            }
+            USART_str("]\n");
             r = 0;
         }
-        else
-            read[r++] = USART_get();
     }
     // //load prog from usart into ram
     

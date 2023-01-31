@@ -57,7 +57,7 @@ void USART_char(char c);
 void USART_str(const char* str);
 void USART_bin(uint32_t val, uint8_t bits);
 void USART_hex(uint32_t val);
-int USART_rx();
+uint32_t USART_rx();
 unsigned char USART_read();
 unsigned char USART_get();
 

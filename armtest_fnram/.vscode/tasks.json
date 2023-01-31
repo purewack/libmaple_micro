@@ -51,7 +51,7 @@
             "label": "Serial Monitor",
             "detail": "Display contents of serial data",
             "windows":{
-                "command": "putty.exe -load \"com\"",
+                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl sendfile=C:\\Users\\Dominika\\Desktop\\dummy.bin chardly=2",
                 "options": {
                     "shell": {
                         "executable": "cmd.exe",
