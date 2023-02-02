@@ -16,6 +16,8 @@ extern uint32_t _ecdata;
 extern uint32_t _scbss;
 extern uint32_t _ecbss;
 
+  #define S_BIT(n,b) n |= (1<<(b))
+  #define C_BIT(n,b) n &= ~(1<<(b))
 
 /*********************************************************************
 *
@@ -44,6 +46,7 @@ extern uint32_t _ecbss;
 #define GPIOA   0x40010800
 #define GPIOB   0x40010C00
 #define USART1  0x40013800
+#define DMA1    0x40020000
 
 //blocking blink function triggered on fault
 void crashBlink(int blink_count);
@@ -57,11 +60,13 @@ void USART_char(char c);
 void USART_str(const char* str);
 void USART_bin(uint32_t val, uint8_t bits);
 void USART_hex(uint32_t val);
-uint32_t USART_rx();
 unsigned char USART_read();
-unsigned char USART_get();
+unsigned char USART_get_char();
+void USART_start_dma_rx(unsigned int len, unsigned char* dest);
+void USART_end_dma_rx();
+int USART_dma_head(int size);
 
-void delay_us(uint32_t us);
+void usleep(uint32_t us);
 void post_libstatus();
 
 #endif

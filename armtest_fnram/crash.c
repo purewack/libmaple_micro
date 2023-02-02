@@ -49,14 +49,16 @@ void USART_force_init(){
     *((uint32_t*)(GPIOA + 0x04)) = (uint32_t)(0x444444b4);
     //GPIOB:15 output PP
     *((uint32_t*)(GPIOB + 0x04)) = (uint32_t)(0x11444444);
-
+    
     //usart1 config
-    //tx rx enable, 8n1, enable usart
+    //tx, rx, 8n1 
     *((uint32_t*)(USART1 + 0x0C)) = (uint16_t)((1<<1) | (1<<2) | (1<<3));
+    //enable usart
     *((uint32_t*)(USART1 + 0x0C)) |= (uint16_t)(1<<13);
+    
 
     /* Convert desired baud rate to baud rate register setting. */
-    uint32_t baud = 112500;
+    uint32_t baud = 115200;
     uint32_t clock_speed = 8000000;
     uint32_t integer_part = (25 * clock_speed) / (4 * baud);
     uint32_t tmp = (integer_part / 100) << 4;
@@ -69,7 +71,7 @@ void USART_char(char c){
     //put char to tx buf
     *((uint32_t*)(USART1 + 0x04)) = (uint8_t)(c);
     //wait until transferred
-    while( ! (*((uint32_t*)(USART1 + 0x00)) &= (1<<7)) ){}
+    while( ! (*((uint32_t*)(USART1 + 0x00)) &= (1<<7)) ){usleep(1);}
 }
 void USART_str(const char* str){
     while(*str != 0){
@@ -100,7 +102,35 @@ uint32_t USART_rx(){
 unsigned char USART_read(){
     return (uint8_t)*((uint32_t*)(USART1 + 0x04));
 }
-unsigned char USART_get(){
+unsigned char USART_get_char(){
     while(USART_rx() == 0){}
     return USART_read();
+}
+void USART_start_dma_rx(unsigned int len, unsigned char* dest){
+    //enable DMA clock
+    *((uint32_t*)(RCC + 0x14)) |= (1<<0); 
+    *((uint32_t*)(DMA1 + 0x58)) = 0;
+
+    //enable usart dma rx bit
+    *((uint32_t*)(USART1 + 0x14)) |= (1<<6);
+    //set DMA1->CH5 source as USART1->DR
+    *((uint32_t*)(DMA1 + 0x60)) = (USART1 + 0x04);
+    //set DMA1->CH5 dest as SRAM space
+    *((uint32_t*)(DMA1 + 0x64)) = (uint32_t)&dest;
+    //buffer size
+    *((uint32_t*)(DMA1 + 0x5C)) = len;
+    //config dma channel, psize == msize already for USART data
+    //: minc, circ, 
+    *((uint32_t*)(DMA1 + 0x58)) = (1<<7) | (1<<5);
+    //dma ch priority vhigh
+    *((uint32_t*)(DMA1 + 0x58)) |= (0b11<<12);
+
+    //enable dma channel
+    *((uint32_t*)(DMA1 + 0x58)) |= (1<<1);
+}
+void USART_end_dma_rx(){
+    *((uint32_t*)(DMA1 + 0x58)) = 0;
+}
+int USART_dma_head(int size){
+    return size - *((uint32_t*)(DMA1 + 0x5C));
 }

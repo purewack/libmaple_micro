@@ -4,7 +4,7 @@ void post_libstatus(){
     USART_str("lib status: loaded\n");
 }
 
-void delay_us(uint32_t us) {
+void usleep(uint32_t us) {
     us *= 3;
 
     /* fudge for function call overhead  */
@@ -17,35 +17,44 @@ void delay_us(uint32_t us) {
                  : "r0");
 }
 
-volatile unsigned char read[256];
-volatile unsigned char r = 0;
-volatile unsigned char ch = 0;
+unsigned char read[256];
+volatile unsigned char tail = 0;
+volatile unsigned char echo_start = 0;
 
 int main(void){
-    
+
     USART_force_init();
-    USART_str("\nlibnumcalcium loader echo:\n");
-    r = 0;
-    while(1){
-        ch = (int)USART_get();
-        read[r] = ch;
-        r++;
-        if(ch == '\n'){
-            USART_str("[\n");
-            for(int i=0; i<r; i++){
-                USART_hex(read[i]);
-                USART_str("\n");
-                read[i] = 0;
-            }
-            USART_str("]\n");
-            r = 0;
-        }
-    }
-    // //load prog from usart into ram
+    USART_str("\nlibnumcalcium loader echo DMA:\n");
     
-    // for(int i=0; i<prog_bytes; i++){
-    //     USART_hex(prog[i]);
+    // for(int i=0; i<8; i++){
+    //     read[i] = USART_get_char();
     // }
-    // while(1);
+    USART_start_dma_rx(256,read);
+    while(USART_dma_head(256) < 8) usleep(1000);
+
+    USART_str("results:\n");
+    for(int i=0; i<16; i++){
+        USART_hex(read[i]);
+        USART_str("\n");
+    }
+    USART_str("===\n");
+
+    while(1){}    
+    
+    
+    // while(1){
+    //     int head = USART_dma_head(256);
+    //     while(head != tail){
+    //         if(read[tail] == '\n'){
+    //             for(int i=echo_start; i<tail; i++){
+    //                 USART_hex(read[i]);
+    //                 USART_str("\n");
+    //             }
+    //             USART_str("]\n");
+    //             echo_start = tail;
+    //         }
+    //         tail++;
+    //     }
+    // }
 	return 0;
 }
