@@ -31,6 +31,9 @@ int main(void){
     // }
     USART_start_dma_rx(256,read);
     while(USART_dma_head(256) < 8) usleep(1000);
+    USART_end_dma_rx();
+
+    usleep(10000);
 
     USART_str("results:\n");
     for(int i=0; i<16; i++){

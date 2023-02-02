@@ -124,9 +124,8 @@ void USART_start_dma_rx(unsigned int len, unsigned char* dest){
     *((uint32_t*)(DMA1 + 0x58)) = (1<<7) | (1<<5);
     //dma ch priority vhigh
     *((uint32_t*)(DMA1 + 0x58)) |= (0b11<<12);
-
     //enable dma channel
-    *((uint32_t*)(DMA1 + 0x58)) |= (1<<1);
+    *((uint32_t*)(DMA1 + 0x58)) |= (1<<0);
 }
 void USART_end_dma_rx(){
     *((uint32_t*)(DMA1 + 0x58)) = 0;
