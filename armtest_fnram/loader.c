@@ -17,53 +17,32 @@ void usleep(uint32_t us) {
                  : "r0");
 }
 
-unsigned char read[256];
-volatile unsigned char tail = 0;
-volatile unsigned char echo_start = 0;
-unsigned char read2[256];
-
 int main(void){
 
     USART_force_init();
-    USART_str("\nlibnumcalcium loader echo DMA:\n");
+    USART_str("\n[libnumcalcium cart loader]\n");
+    USART_str("Waiting for cart size... :");
     
-    // for(int i=0; i<8; i++){
-    //     read[i] = USART_get_char();
-    // }
-    USART_str("\nfrom [");
-    USART_hex((uint32_t)read2);
-    USART_str("]\n");
-    USART_start_dma_rx(256,(uint32_t)read2);
-    while(USART_dma_head(256) < 8) usleep(1000);
+    uint32_t cart_size = 0;
+    cart_size =  (uint32_t)USART_get_char();
+    cart_size |= (uint32_t)USART_get_char()<<8;
+    cart_size |= (uint32_t)USART_get_char()<<16;
+    cart_size |= (uint32_t)USART_get_char()<<24;
+    USART_hex(cart_size);
+
+    char* data = (char*)0x20000000 + 4*1024;
+    USART_start_dma_rx(cart_size+1,(uint32_t)data);
+    USART_str("\nWaiting on data... :");
+    while(USART_dma_head(cart_size+1) != cart_size) usleep(1);
     USART_end_dma_rx();
 
-    usleep(10000);
-
-    USART_str("\nresults [");
-    USART_hex(USART_dma_head(256));
-    USART_str("] :\n");
-    for(int i=0; i<USART_dma_head(256); i++){
-        USART_hex(read2[i]);
-        USART_str("\n");
+    USART_str("OK\n");
+    USART_str("RX dump ::\n");
+    for(int i=0; i<cart_size; i++){
+        USART_hex(data[i]);
+        USART_char('\n');
     }
-    USART_str("===\n");
+    while(1);
 
-    while(1){}    
-    
-    
-    // while(1){
-    //     int head = USART_dma_head(256);
-    //     while(head != tail){
-    //         if(read[tail] == '\n'){
-    //             for(int i=echo_start; i<tail; i++){
-    //                 USART_hex(read[i]);
-    //                 USART_str("\n");
-    //             }
-    //             USART_str("]\n");
-    //             echo_start = tail;
-    //         }
-    //         tail++;
-    //     }
-    // }
 	return 0;
 }

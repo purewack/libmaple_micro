@@ -127,13 +127,13 @@ void USART_start_dma_rx(unsigned int len, unsigned int dest){
     //enable dma channel
     *((uint32_t*)(DMA1 + 0x58)) |= (1<<0);
 
-    USART_str("DMA settings:");
-    USART_str("\n[from  ]"); USART_hex(dest);
-    USART_str("\n[source]"); USART_hex(*((uint32_t*)(DMA1 + 0x60)));
-    USART_str("\n[dest  ]"); USART_hex(*((uint32_t*)(DMA1 + 0x64)));
-    USART_str("\n[length]"); USART_hex(*((uint32_t*)(DMA1 + 0x5C)));
-    USART_str("\n[config]"); USART_hex(*((uint32_t*)(DMA1 + 0x58)));
-    USART_str("\n");
+    // USART_str("DMA settings:");
+    // USART_str("\n[from  ]"); USART_hex(dest);
+    // USART_str("\n[source]"); USART_hex(*((uint32_t*)(DMA1 + 0x60)));
+    // USART_str("\n[dest  ]"); USART_hex(*((uint32_t*)(DMA1 + 0x64)));
+    // USART_str("\n[length]"); USART_hex(*((uint32_t*)(DMA1 + 0x5C)));
+    // USART_str("\n[config]"); USART_hex(*((uint32_t*)(DMA1 + 0x58)));
+    // USART_str("\n");
 }
 void USART_end_dma_rx(){
     *((uint32_t*)(DMA1 + 0x58)) = 0;
