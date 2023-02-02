@@ -20,6 +20,7 @@ void usleep(uint32_t us) {
 unsigned char read[256];
 volatile unsigned char tail = 0;
 volatile unsigned char echo_start = 0;
+unsigned char read2[256];
 
 int main(void){
 
@@ -29,15 +30,20 @@ int main(void){
     // for(int i=0; i<8; i++){
     //     read[i] = USART_get_char();
     // }
-    USART_start_dma_rx(256,read);
+    USART_str("\nfrom [");
+    USART_hex((uint32_t)read2);
+    USART_str("]\n");
+    USART_start_dma_rx(256,(uint32_t)read2);
     while(USART_dma_head(256) < 8) usleep(1000);
     USART_end_dma_rx();
 
     usleep(10000);
 
-    USART_str("results:\n");
-    for(int i=0; i<16; i++){
-        USART_hex(read[i]);
+    USART_str("\nresults [");
+    USART_hex(USART_dma_head(256));
+    USART_str("] :\n");
+    for(int i=0; i<USART_dma_head(256); i++){
+        USART_hex(read2[i]);
         USART_str("\n");
     }
     USART_str("===\n");

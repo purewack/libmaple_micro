@@ -62,7 +62,7 @@ void USART_bin(uint32_t val, uint8_t bits);
 void USART_hex(uint32_t val);
 unsigned char USART_read();
 unsigned char USART_get_char();
-void USART_start_dma_rx(unsigned int len, unsigned char* dest);
+void USART_start_dma_rx(unsigned int len, unsigned int dest);
 void USART_end_dma_rx();
 int USART_dma_head(int size);
 
