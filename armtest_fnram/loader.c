@@ -1,5 +1,9 @@
 #include "libnumcalcium.h"
 
+
+__attribute__ ((section(".ctext")))
+void C_Reset(){}
+
 void post_libstatus(){
     USART_str("lib status: loaded\n");
 }
@@ -40,9 +44,7 @@ int main(void){
     USART_get_char();
     
     USART_str("Exec. C_Reset @ 0x20000400\n");
-    void (*C_Reset)(void) = (void*)(0x20000400);
-    (*C_Reset)();
- 
+    C_Reset();
     while(1);
 
 	return 0;

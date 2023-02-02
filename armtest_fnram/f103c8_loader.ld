@@ -4,6 +4,7 @@ MEMORY
 {
     FLASH(rx): ORIGIN = 0x08000000, LENGTH = 128K
     SRAM(rwx): ORIGIN = 0x20000000, LENGTH = 4k
+    CRAM(rwx): ORIGIN = 0x20000400, LENGTH = 16k
 }
 
 SECTIONS
@@ -42,4 +43,10 @@ SECTIONS
         _ebss = .;
     }> SRAM
 
+    .ctext : {
+        _sctext = .;
+        . = ALIGN(4);
+        *(.ctext*)
+        _ectext = .;
+    }> CRAM AT> FLASH
 }
