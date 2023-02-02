@@ -71,7 +71,7 @@ void USART_char(char c){
     //put char to tx buf
     *((uint32_t*)(USART1 + 0x04)) = (uint8_t)(c);
     //wait until transferred
-    while( ! (*((uint32_t*)(USART1 + 0x00)) &= (1<<7)) ){usleep(1);}
+    while( ! (*((uint32_t*)(USART1 + 0x00)) & (1<<6)) ){}
 }
 void USART_str(const char* str){
     while(*str != 0){
