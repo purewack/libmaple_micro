@@ -16,10 +16,10 @@ all: $(BUILD_DIR)/$(TARGET).bin
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
-main.o: main.c
+$(BUILD_DIR)/main.o: main.c
 	$(PRE)-gcc $(CFLAGS) -o $@ $^ 
 
-$(BUILD_DIR)/$(TARGET).elf: main.o ../build/libnumcalcium.a
+$(BUILD_DIR)/$(TARGET).elf: $(BUILD_DIR)/main.o ../build/libnumcalcium.a
 	$(PRE)-gcc $(LDFLAGS) $^ -o $@ 
 
 $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf

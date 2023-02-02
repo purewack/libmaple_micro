@@ -36,12 +36,13 @@ int main(void){
     while(USART_dma_head(cart_size+1) != cart_size) usleep(1);
     USART_end_dma_rx();
 
-    USART_str("OK\n");
-    USART_str("RX dump ::\n");
-    for(int i=0; i<cart_size; i++){
-        USART_hex(data[i]);
-        USART_char('\n');
-    }
+    USART_str("OK\n Waiting on start byte (any)\n");
+    USART_get_char();
+    
+    USART_str("Exec. C_Reset @ 0x20000400\n");
+    void (*C_Reset)(void) = (void*)(0x20000400);
+    (*C_Reset)();
+ 
     while(1);
 
 	return 0;

@@ -15,7 +15,10 @@ void C_Reset(){
         *bssDest++ = 0;
     }
 
-    USART_force_init();
-    USART_str("hello from cart\n");
-    while(1){};
+    while(1){
+        *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
+        usleep(100000);
+        *((uint32_t*)(GPIOB + 0xc)) = 0;
+        usleep(100000);
+    };
 }

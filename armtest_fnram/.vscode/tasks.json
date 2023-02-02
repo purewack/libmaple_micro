@@ -51,7 +51,7 @@
             "label": "Serial Monitor",
             "detail": "Display contents of serial data",
             "windows":{
-                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl rows=30 cols=60 scrollback=2000 sendfile=C:\\Users\\Dominika\\Desktop\\cart.bin chardly=2",
+                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl rows=30 cols=60 scrollback=2000 sendfile=C:\\Users\\Dominika\\Documents\\GitHub\\libmaple_micro\\armtest_fnram\\cart\\build\\cart.bin chardly=1",
                 "options": {
                     "shell": {
                         "executable": "cmd.exe",
