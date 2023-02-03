@@ -79,5 +79,16 @@
                 "Serial Monitor"
             ]
         },
+        
+        {
+            "type": "shell",
+            "label": "Clean Make",
+            "detail": "Clean and Make project",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "ARM Clean",
+                "ARM Make"
+            ]
+        },
     ]
 }
