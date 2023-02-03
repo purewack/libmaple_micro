@@ -7,11 +7,12 @@ PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft 
 CFLAGS= -c $(SYS) -std=gnu11 -Wall -o0
-LDFLAGS = $(SYS) -nostdlib -T ../$(PLATFORM)_cart.ld -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
+LDFLAGS = $(SYS) -nostdlib -T ../$(PLATFORM)_cart.ld -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--gc-sections
 
 all: $(BUILD_DIR)/$(TARGET).bin 
 	$(PRE)-objdump -D -h $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).dias
 	$(PRE)-nm $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).nm
+
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)

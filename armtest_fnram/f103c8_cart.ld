@@ -2,7 +2,7 @@ ENTRY(C_Reset)
 
 MEMORY
 {
-    CRAM(rwx): ORIGIN = 0x20000400, LENGTH = 16k
+    CRAM(rwx): ORIGIN = 0x20001000, LENGTH = 16k
 }
 
 SECTIONS

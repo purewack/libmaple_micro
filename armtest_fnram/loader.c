@@ -41,11 +41,11 @@ int main(void){
     while(USART_dma_head(cart_size+1) != cart_size) usleep(1);
     USART_end_dma_rx();
 
-    USART_str("OK...Data dump:\n");
-    for(int i=0; i<cart_size; i++){
-        USART_hex(data[i]);
-        USART_char('\n');
-    }
+    // USART_str("OK...Data dump:\n");
+    // for(int i=0; i<cart_size; i++){
+    //     USART_hex(data[i]);
+    //     USART_char('\n');
+    // }
 
     USART_str("\n Waiting on start byte (any)\n");
     USART_get_char();
@@ -58,7 +58,7 @@ int main(void){
     void(*cloader)(void) = (void*)((uint32_t)&_sctext | 1);
     (*cloader)();
     
-    
+
     while(1);
 
 	return 0;

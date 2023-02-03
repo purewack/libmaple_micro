@@ -6,7 +6,7 @@ PLATFORM=f103c8
 PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft
-CFLAGS= -c $(SYS) -std=gnu11 -Wall -o0
+CFLAGS= -c $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
 LDFLAGS = $(SYS) -nostdlib -T $(PLATFORM)_loader.ld -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
 
 all: $(BUILD_DIR)/firmware.bin 
