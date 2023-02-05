@@ -4,6 +4,9 @@ void C_Reset(){
 
     USART_str("\nHello from cart :)\n");
 
+    void(*sloader)(const char*) = (void*)((uint32_t)0x080006b0 | 1);
+    (*sloader)("Yo Yo");
+
     while(1){
         *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
         for(int i=0; i<200000; i++){}

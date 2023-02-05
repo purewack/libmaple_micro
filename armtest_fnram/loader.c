@@ -1,7 +1,9 @@
 #include "libnumcalcium.h"
 
-void post_libstatus(){
+void post_libstatus(const char* msg){
     USART_str("lib status: loaded\n");
+    USART_str(msg);
+    USART_char('\n');
 }
 
 void usleep(uint32_t us) {
