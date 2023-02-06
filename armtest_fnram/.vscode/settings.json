@@ -12,5 +12,8 @@
                 "MSYS2_PATH_TYPE": "inherit"
             }
         }
+    },
+    "files.associations": {
+        "libnumcalcium.h": "c"
     }
 }

@@ -1,9 +1,6 @@
 #include "libnumcalcium.h"
 #include <string.h>
 
-enum ftype_t{
-    VOID_VOID = 0
-};
 
 void post_hello(){
     USART_str("api: hello\n");
@@ -17,13 +14,15 @@ void post_libstatus(const char* msg){
     USART_char('\n');
 }
 __attribute__((section(".api")))
-void* api_getFunction(const char* fname, int type){
-    if(type == VOID_VOID){
-        if(strcmp(fname,"post_hello") == 0)
-            return (void*)post_hello;
-        if(strcmp(fname,"post_hello2") == 0)
-            return (void*)post_hello2;
-    }
+void* api_getFunction(const char* fname){
+    
+    if(strcmp(fname,"post_hello") == 0)
+        return (void*)post_hello;
+    if(strcmp(fname,"post_hello2") == 0)
+        return (void*)post_hello2;
+    if(strcmp(fname,"post_libstatus") == 0)
+        return (void*)post_libstatus;
+
     return (void*)0;
 }
 
@@ -75,9 +74,8 @@ int main(void){
     // USART_str("\n");
     // C_Reset_Loader();
 
-    void(*cloader)(void) = (void*)((uint32_t)0x20001000 | 1);
-    (*cloader)();
-    
+    //start ram code
+    ((void(*)(void))0x20001001)();
 
     while(1){}
 
