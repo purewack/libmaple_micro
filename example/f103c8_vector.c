@@ -162,6 +162,8 @@ void I_Default(void){
     while(1){};
 }
 
+extern void __libc_init_array(void);
+
 void I_Reset(void){
     //uint32_t sz_text = &_etext - &_stext;
     uint32_t sz_data = &_edata - &_sdata;
@@ -176,6 +178,8 @@ void I_Reset(void){
     for(uint32_t i=0; i< sz_bss; i++){
         *bssDest++ = 0;
     }
+
+    __libc_init_array();
 
     main();
 }

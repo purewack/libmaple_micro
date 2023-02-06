@@ -1,5 +1,5 @@
-TARGET=cart
-BUILD_DIR=build
+TARGET=cart_build
+BUILD_DIR=fw_build
 SRC_DIR=.
 PLATFORM=f103c8
 

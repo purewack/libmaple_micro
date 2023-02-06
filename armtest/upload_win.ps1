@@ -1,1 +1,0 @@
-C:\Users\Dominika\Documents\Arduino\hardware\Arduino_STM32-master\tools\win\stm32flash.exe -w firmware.bin -b 115200 -v -g 0x0 COM6  
