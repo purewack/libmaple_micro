@@ -162,9 +162,6 @@ void I_Default(void){
     while(1){};
 }
 
-extern uint32_t _sctext;
-extern uint32_t _ectext;
-
 void I_Reset(void){
     //uint32_t sz_text = &_etext - &_stext;
     uint32_t sz_data = &_edata - &_sdata;
@@ -178,13 +175,6 @@ void I_Reset(void){
     }
     for(uint32_t i=0; i< sz_bss; i++){
         *bssDest++ = 0;
-    }
-
-    uint32_t csize = &_ectext - &_sctext;
-    uint32_t* cartSrc   = (uint32_t*)&_etext+sz_data+sz_bss;
-    uint32_t* cartDest  = (uint32_t*)&_sctext;
-    for(int i=0; i<csize; i++){
-        *cartDest++ = *cartSrc++;
     }
 
     main();

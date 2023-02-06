@@ -12,7 +12,8 @@ LDFLAGS = $(SYS) -nostdlib -T ../$(PLATFORM)_cart.ld -Wl,-Map=$(BUILD_DIR)/$(TAR
 all: $(BUILD_DIR)/$(TARGET).bin 
 	$(PRE)-objdump -D -h $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).dias
 	$(PRE)-nm $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).nm
-
+	@echo "[Build complete] :"
+	$(PRE)-size $(BUILD_DIR)/$(TARGET).elf
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)

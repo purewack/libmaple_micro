@@ -13,6 +13,8 @@ SECTIONS
         _stext = .;
         *(.isr)
         . = ALIGN(4);
+        *(.api .api*)
+        . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);
         *(.glue_7t) 
@@ -21,7 +23,6 @@ SECTIONS
         *(.v4_bx) 
         *(.iplt)
         *(.rel.dyn)
-        . = ALIGN(4);
         *(.rodata)
         . = ALIGN(4);
         _etext = .;
@@ -37,16 +38,12 @@ SECTIONS
 
     .bss : {
         _sbss = .;
+        __bss_start__ = _sbss;
         *(.bss .bss.* .gnu.linkonce.b.*)
         *(COMMON)
         . = ALIGN(4);
         _ebss = .;
+        __bss_end__ = _ebss;
+        __bss_end__ = _ebss;
     }> SRAM
-
-    .ctext : {
-        _sctext = .;
-        . = ALIGN(4);
-        *(.ctext*)
-        _ectext = .;
-    }> CRAM AT> FLASH
 }
