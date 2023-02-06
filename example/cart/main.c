@@ -1,4 +1,4 @@
-#include "../libnumcalcium.h"
+#include "libnumcalcium.h"
 
 void C_Reset(){
     USART_str("\nHello from cart :)\n");

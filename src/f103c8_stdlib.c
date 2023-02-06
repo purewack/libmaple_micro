@@ -177,3 +177,4 @@ __weak void _exit(int exitcode) {
     while (1)
         ;
 }
+

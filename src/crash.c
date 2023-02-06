@@ -1,5 +1,17 @@
 #include "libnumcalcium.h"
 
+void usleep_8MHz(uint32_t us) {
+    us *= 3;
+
+    /* fudge for function call overhead  */
+    us--;
+    asm volatile("   mov r0, %[us]          \n\t"
+                 "1: subs r0, #1            \n\t"
+                 "   bhi 1b                 \n\t"
+                 :
+                 : [us] "r" (us)
+                 : "r0");
+}
 
 void crashBlink(int blink_count){
     while(1){

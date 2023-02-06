@@ -2,6 +2,13 @@
 
 #include "libnumcalcium.h"
 
+extern uint32_t _stext;
+extern uint32_t _etext;
+extern uint32_t _sdata;
+extern uint32_t _edata;
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+
 int main(void);
 
 void I_Reset(void);

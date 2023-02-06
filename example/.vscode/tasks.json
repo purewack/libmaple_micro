@@ -30,7 +30,7 @@
             "label": "STM32 Upload",
             "detail": "Upload default binary file to target",
             "windows":{
-                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w C:\\Users\\Dominika\\Documents\\GitHub\\libmaple_micro\\armtest_fnram\\build\\firmware.bin -v -g 0x0 COM16",
+                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w build_firmware\\firmware.bin -v -g 0x0 COM16",
                 "options": {
                     "shell": {
                         "executable": "cmd.exe",
@@ -51,7 +51,7 @@
             "label": "Serial Monitor",
             "detail": "Display contents of serial data",
             "windows":{
-                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl rows=30 cols=60 scrollback=2000 sendfile=C:\\Users\\Dominika\\Documents\\GitHub\\libmaple_micro\\armtest_fnram\\cart\\build\\cart.bin chardly=1",
+                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl rows=30 cols=60 scrollback=2000 sendfile=C:\\Users\\Dominika\\Documents\\GitHub\\libmaple_micro\\example\\build_cart\\cart.bin chardly=1",
                 "options": {
                     "shell": {
                         "executable": "cmd.exe",

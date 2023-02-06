@@ -2,12 +2,7 @@
 #define COMMON_H
 
 #include <stdint.h>
-extern uint32_t _stext;
-extern uint32_t _etext;
-extern uint32_t _sdata;
-extern uint32_t _edata;
-extern uint32_t _sbss;
-extern uint32_t _ebss;
+
 
 #define S_BIT(n,b) n |= (1<<(b))
 #define C_BIT(n,b) n &= ~(1<<(b))
@@ -59,11 +54,9 @@ void USART_start_dma_rx(unsigned int len, unsigned int dest);
 void USART_end_dma_rx();
 int USART_dma_head(int size);
 
-void usleep(uint32_t us);
+void usleep_8MHz(uint32_t us);
 
 #define F_NM_API_GETTER (0x08000124 | 1)
 #define GET_API_FUNC_POINTER(X) ((void* (*)(const char*))F_NM_API_GETTER)(#X)
-
-void post_libstatus();
 
 #endif
