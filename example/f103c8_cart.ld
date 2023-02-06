@@ -8,7 +8,6 @@ MEMORY
 SECTIONS
 {
     .text : {
-        _stext = .;
         . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);
@@ -21,23 +20,18 @@ SECTIONS
         . = ALIGN(4);
         *(.rodata)
         . = ALIGN(4);
-        _etext = .;
     }> CRAM
     
     .data : {
-        _sdata = .;
         *(.data .data.* .gnu.linkonce.d.*)
         *(.igot.plt)
         . = ALIGN(4);
-        _edata = .;
     }> CRAM
 
     .bss : {
-        _sbss = .;
         *(.bss .bss.* .gnu.linkonce.b.*)
         *(COMMON)
         . = ALIGN(4);
-        _ebss = .;
     }> CRAM
 
 }
