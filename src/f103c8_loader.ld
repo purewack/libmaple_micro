@@ -13,7 +13,8 @@ SECTIONS
         _stext = .;
         *(.isr)
         . = ALIGN(4);
-        *(.api .api*)
+        *(.system .system*)
+        *(.loader .loader*)
         . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);

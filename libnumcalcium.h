@@ -38,7 +38,7 @@
 
 //blocking blink function triggered on fault
 void crashBlink(int blink_count);
-//init usart for posting error messages on fault
+//init system for posting error messages on fault
 void crashInit();
 //post register contents relating to crash
 void USART_crash_registers();
@@ -56,7 +56,8 @@ int USART_dma_head(int size);
 
 void usleep_8MHz(uint32_t us);
 
-#define F_NM_API_GETTER (0x08000124 | 1)
-#define GET_API_FUNC_POINTER(X) ((void* (*)(const char*))F_NM_API_GETTER)(#X)
+#define LOAD_SFP(X) ((void* (*)(const char*))0x08000125)(#X)
+#define BEGIN_CART ((int(*)(void))0x20001001)
+int sideload_cart_USART();
 
 #endif

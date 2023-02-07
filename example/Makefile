@@ -31,10 +31,10 @@ $(D_BUILD_STAT):
 	mkdir $(D_BUILD_STAT)
 
 
-$(D_BUILD_FW)/loader.o: loader.c | $(D_BUILD_FW)
+$(D_BUILD_FW)/main.o: main.c | $(D_BUILD_FW)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(D_BUILD_FW)/$(EXE_FW).elf: $(D_BUILD_FW)/loader.o ../build/libnumcalcium.a | $(D_BUILD_STAT)
+$(D_BUILD_FW)/$(EXE_FW).elf: $(D_BUILD_FW)/main.o ../lib/libnumcalcium.a | $(D_BUILD_STAT)
 	$(PRE)-gcc $(LDFLAGS) $^ -o $@ 
 
 $(D_BUILD_FW)/$(EXE_FW).bin: $(D_BUILD_FW)/$(EXE_FW).elf
@@ -45,7 +45,7 @@ $(D_BUILD_FW)/$(EXE_FW).bin: $(D_BUILD_FW)/$(EXE_FW).elf
 $(D_BUILD_CART)/main.o: cart/main.c | $(D_BUILD_CART) 
 	$(PRE)-gcc $(CFLAGS_CART) -o $@ $^ 
 
-$(D_BUILD_CART)/$(EXE_CART).elf: $(D_BUILD_CART)/main.o ../build/libnumcalcium.a | $(D_BUILD_STAT)
+$(D_BUILD_CART)/$(EXE_CART).elf: $(D_BUILD_CART)/main.o ../lib/libnumcalcium.a | $(D_BUILD_STAT)
 	$(PRE)-gcc $(LDFLAGS_CART) $^ -o $@ 
 
 $(D_BUILD_CART)/cart.bin: $(D_BUILD_CART)/$(EXE_CART).elf

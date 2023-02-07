@@ -165,10 +165,6 @@ uint32_t vectors[] __attribute__((section(".isr"))) = {
     (uint32_t)&I_DMA2_4_5
 };
 
-void I_Default(void){
-    while(1){};
-}
-
 extern void __libc_init_array(void);
 
 void I_Reset(void){
@@ -217,4 +213,8 @@ void I_CrashUsage(void){
     USART_str("Crash: UsageFault\n");
     USART_crash_registers();
     crashBlink(4);
+}
+
+void I_Default(void){
+    while(1){};
 }
