@@ -5,14 +5,15 @@ D_BUILD_CART=build_$(EXE_CART)
 D_BUILD_STAT=build_debug
 SRC_DIR=.
 PLATFORM=f103c8
+LIB=libnumcalcium
 
 PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft
-CFLAGS= -c -I../ $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
-LDFLAGS = --specs=nosys.specs $(SYS) -T ../src/$(PLATFORM)_loader.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_FW).map,--emit-relocs
-CFLAGS_CART= -c -I../ $(SYS) -std=gnu11 -Wall -o0
-LDFLAGS_CART = $(SYS) -T ../src/$(PLATFORM)_cart.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_CART).map,--gc-sections
+CFLAGS= -c -I../$(LIB) $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
+LDFLAGS = --specs=nosys.specs $(SYS) -T ../$(LIB)/ld/$(PLATFORM)_loader.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_FW).map,--emit-relocs
+CFLAGS_CART= -c -I../$(LIB) $(SYS) -std=gnu11 -Wall -o0
+LDFLAGS_CART = $(SYS) -T ../$(LIB)/ld/$(PLATFORM)_cart.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_CART).map,--gc-sections
 
 all: $(D_BUILD_FW)/firmware.bin $(D_BUILD_CART)/cart.bin | $(D_BUILD_STAT)
 	$(PRE)-objdump -D -h $(D_BUILD_FW)/$(EXE_FW).elf > $(D_BUILD_STAT)/$(EXE_FW).dias
@@ -34,7 +35,7 @@ $(D_BUILD_STAT):
 $(D_BUILD_FW)/main.o: main.c | $(D_BUILD_FW)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(D_BUILD_FW)/$(EXE_FW).elf: $(D_BUILD_FW)/main.o ../lib/libnumcalcium.a | $(D_BUILD_STAT)
+$(D_BUILD_FW)/$(EXE_FW).elf: $(D_BUILD_FW)/main.o ../$(LIB)/libnumcalcium.a | $(D_BUILD_STAT)
 	$(PRE)-gcc $(LDFLAGS) $^ -o $@ 
 
 $(D_BUILD_FW)/$(EXE_FW).bin: $(D_BUILD_FW)/$(EXE_FW).elf
@@ -45,7 +46,7 @@ $(D_BUILD_FW)/$(EXE_FW).bin: $(D_BUILD_FW)/$(EXE_FW).elf
 $(D_BUILD_CART)/main.o: cart/main.c | $(D_BUILD_CART) 
 	$(PRE)-gcc $(CFLAGS_CART) -o $@ $^ 
 
-$(D_BUILD_CART)/$(EXE_CART).elf: $(D_BUILD_CART)/main.o ../lib/libnumcalcium.a | $(D_BUILD_STAT)
+$(D_BUILD_CART)/$(EXE_CART).elf: $(D_BUILD_CART)/main.o ../$(LIB)/libnumcalcium.a | $(D_BUILD_STAT)
 	$(PRE)-gcc $(LDFLAGS_CART) $^ -o $@ 
 
 $(D_BUILD_CART)/cart.bin: $(D_BUILD_CART)/$(EXE_CART).elf

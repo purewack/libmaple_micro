@@ -1,36 +1,36 @@
 BUILD=build
+LIB=libnumcalcium
 SRC_DIR=.
 PLATFORM=f103c8
 
 PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft
-CFLAGS= -c -I. $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
-LDFLAGS = --specs=nosys.specs $(SYS) -T ../src/$(PLATFORM)_loader.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_FW).map,--emit-relocs
+CFLAGS= -c -I./$(LIB) $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
 
-all: lib/libnumcalcium.a | $(BUILD)
+all: $(LIB)/$(LIB).a | $(BUILD)
 	@echo "======================="
-	@echo "[libnumcalcium built]"
+	@echo "[$(LIB) built]"
 
 $(BUILD):
 	mkdir $(BUILD)
-lib:
-	mkdir lib
+$(LIB):
+	mkdir $(LIB)
 
-lib/libnumcalcium.a: $(BUILD)/vect.o $(BUILD)/crash.o $(BUILD)/sys.o $(BUILD)/loader.o | lib
+$(LIB)/$(LIB).a: $(BUILD)/vect.o $(BUILD)/crash.o $(BUILD)/sys.o $(BUILD)/loader.o | $(LIB)
 	$(PRE)-ar rcs $@ $^
 
-$(BUILD)/vect.o: src/$(PLATFORM)_vector.c | $(BUILD)
+$(BUILD)/vect.o: $(LIB)/src/$(PLATFORM)_vector.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/sys.o: src/$(PLATFORM)_stdlib.c | $(BUILD)
+$(BUILD)/sys.o: $(LIB)/src/$(PLATFORM)_stdlib.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/loader.o: src/$(PLATFORM)_loader.c | $(BUILD)
+$(BUILD)/loader.o: $(LIB)/src/$(PLATFORM)_loader.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/crash.o: src/crash.c | $(BUILD)
+$(BUILD)/crash.o: $(LIB)/src/$(PLATFORM)_crash.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
 clean:
-	rm -rf $(BUILD) lib/libnumcalcium.a
+	rm -rf $(BUILD) libnumcalcium/libnumcalcium.a
