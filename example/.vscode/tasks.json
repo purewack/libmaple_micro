@@ -1,0 +1,94 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "ARM Make",
+            "detail": "Build all using make for ARM target",
+            "command": "make.exe",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        
+        {
+            "type": "shell",
+            "label": "ARM Clean",
+            "detail": "Clean all using make for ARM target",
+            "command": "make.exe clean",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        
+        {
+            "type": "shell",
+            "label": "STM32 Upload",
+            "detail": "Upload default binary file to target",
+            "windows":{
+                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w build_firmware\\firmware.bin -v -g 0x0 COM16",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d", "/c"
+                        ]
+                    }
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+        
+        {
+            "type": "shell",
+            "label": "Serial Monitor",
+            "detail": "Display contents of serial data",
+            "windows":{
+                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=16 baud=115200 lfnl rows=30 cols=60 scrollback=2000 sendfile=C:\\Users\\Dominika\\Documents\\GitHub\\libmaple_micro\\example\\build_cart\\cart.bin chardly=1",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d", "/c"
+                        ]
+                    }
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+
+        {
+            "type": "shell",
+            "label": "STM32 Chain",
+            "detail": "Chain commands to make, upload, serial monitor",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "ARM Clean",
+                "ARM Make",
+                "STM32 Upload",
+                "Serial Monitor"
+            ]
+        },
+        
+        {
+            "type": "shell",
+            "label": "Clean Make",
+            "detail": "Clean and Make project",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "ARM Clean",
+                "ARM Make"
+            ]
+        },
+    ]
+}

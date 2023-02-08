@@ -1,0 +1,6 @@
+{
+    "root":"../example",
+    "filename":"cart.bin",
+    "port_win":"COM16",
+    "baud":115200
+}
