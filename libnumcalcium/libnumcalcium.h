@@ -56,6 +56,7 @@ int USART_dma_head(int size);
 
 void usleep_8MHz(uint32_t us);
 
+#define CART_MAIN __attribute__((section(".cart_main")))
 #define LOAD_SFP(X) ((void* (*)(const char*))0x08000125)(#X)
 #define BEGIN_CART ((int(*)(void))0x20001001)
 int sideload_cart_USART();

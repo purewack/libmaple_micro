@@ -30,7 +30,7 @@
             "label": "STM32 Upload",
             "detail": "Upload default binary file to target",
             "windows":{
-                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w build_firmware\\firmware.bin -v -g 0x0 COM16",
+                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w example\\build_firmware\\firmware.bin -v -g 0x0 COM16",
                 "options": {
                     "shell": {
                         "executable": "cmd.exe",

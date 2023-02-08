@@ -1,6 +1,13 @@
 #include "libnumcalcium.h"
 
-int C_Reset(){
+void blink_one(){
+    *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
+    usleep_8MHz(100000);
+    *((uint32_t*)(GPIOB + 0xc)) = 0;
+    usleep_8MHz(500000);
+}
+
+CART_MAIN int C_Reset(){
     USART_str("\nHello from cart :)\n");
 
     void(*sys_dummy)(void) = LOAD_SFP(sys_dummy);
@@ -8,10 +15,9 @@ int C_Reset(){
     else return -1;
 
     while(1){
-        *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
-        for(int i=0; i<200000; i++){}
-        *((uint32_t*)(GPIOB + 0xc)) = 0;
-        for(int i=0; i<200000; i++){}
+        blink_one();
+        blink_one();
+        usleep_8MHz(2000000);
     };
     return 0;
 }

@@ -9,6 +9,7 @@ SECTIONS
 {
     .text : {
         . = ALIGN(4);
+        *(.cart_main, .cart_main*)
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);
         *(.glue_7t) 
