@@ -12,7 +12,7 @@ all: $(LIB)/$(LIB).a | $(BUILD)
 	@echo "======================="
 	@echo "[$(LIB) built]"
 
-example: $(LIB)/$(LIB).a
+example: $(LIB)/$(LIB).a example/build_firmware/firmware.bin example/build_cart/cart.bin
 	+$(MAKE) -C example
 example_sideload: example
 	python3 util/sideload_serial.py
