@@ -1,18 +1,20 @@
 import time
-from common import *
 import serial
 import curses
+from common import *
 from sideload_serial import sideload
+import stm32loader
 
 def stats(win,options,config):
     win.clear()
     win.border()
     win.addstr(0,2,'libnumcalcium tool')
     win.addnstr(1,1,f'Port:{config["port"]}',30)
-    win.addnstr(2,1,f'TS:{options["timeStamp"]}',30)
-    win.addnstr(3,1,f'Scroll:{options["autoScroll"]}',30)
-    win.addnstr(4,1,f'Sideload:{config["sideload"]}',30)
-    win.addnstr(5,1,f'Firmware:{config["firmware"]}',30)
+    win.addnstr(2,1,f'[T]imestamp:{options["timeStamp"]}',30)
+    win.addnstr(3,1,f'[A]utoscroll:{options["autoScroll"]}',30)
+    win.addnstr(4,1,f'[S]ideload:{config["sideload"]}',30)
+    win.addnstr(5,1,f'[F]irmware:{config["firmware"]}',30)
+    win.addnstr(6,1,f'[C]lear',30)
     win.refresh()
 
 def main(stdscr):
@@ -43,13 +45,18 @@ def main(stdscr):
         if(key == ord('q')):
             break
 
-        if(key == ord('s')):
-            winConsole.addstr(f'\t[Sideload]:{config["sideload"]}\n')
+        if(key == ord('f')):
+            pass
+        elif(key == ord('s')):
+            winConsole.addstr(f'![Sideload]:{config["sideload"]}\n')
             winConsole.refresh()
             sideload(ser,f"{root}/../{config['sideload']}")
         elif(key == ord('t')):
             options['timeStamp'] = not options['timeStamp']
             stats(winStats,options,config)
+        elif(key == ord('c')):
+            winConsole.clear()
+            winConsole.refresh()
 
         if(ser.in_waiting):
             while(ser.in_waiting):
@@ -65,9 +72,9 @@ def main(stdscr):
                 winConsole.addstr(c)
                 
                 if(c == b'\n'):
+                    winConsole.refresh()
                     wasNewline = True
             
-            winConsole.refresh()
 
     ser.close()
 

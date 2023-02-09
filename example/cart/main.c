@@ -17,7 +17,7 @@ CART_MAIN int C_Reset(){
     while(1){
         blink_one();
         USART_str("blink :o\n");
-        usleep_8MHz(2000000);
+        usleep_8MHz(500000);
     };
     return 0;
 }
