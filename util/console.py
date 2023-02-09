@@ -10,8 +10,9 @@ def stats(win,options,config):
     win.addstr(0,2,'libnumcalcium tool')
     win.addnstr(1,1,f'Port:{config["port"]}',30)
     win.addnstr(2,1,f'TS:{options["timeStamp"]}',30)
-    win.addnstr(3,1,f'Sideload:{config["sideload"]}',30)
-    win.addnstr(4,1,f'Firmware:{config["firmware"]}',30)
+    win.addnstr(3,1,f'Scroll:{options["autoScroll"]}',30)
+    win.addnstr(4,1,f'Sideload:{config["sideload"]}',30)
+    win.addnstr(5,1,f'Firmware:{config["firmware"]}',30)
     win.refresh()
 
 def main(stdscr):
@@ -22,11 +23,13 @@ def main(stdscr):
     stdscr.refresh()
     curses.curs_set(0)
     
-    winConsole = curses.newwin(64,128,0,32)
+    winConsole = curses.newwin(curses.LINES,128,0,32)
+    winConsole.scrollok(True)
 
     winStats = curses.newwin(8,32,0,0)
     options = {
-        "timeStamp" : False
+        "timeStamp" : False,
+        "autoScroll" : True,
     }
     stats(winStats,options,config)
 
