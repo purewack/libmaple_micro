@@ -12,6 +12,11 @@ all: $(LIB)/$(LIB).a | $(BUILD)
 	@echo "======================="
 	@echo "[$(LIB) built]"
 
+example: $(LIB)/$(LIB).a
+	+$(MAKE) -C example
+example_sideload: example
+	python3 util/sideload_serial.py
+
 $(BUILD):
 	mkdir $(BUILD)
 $(LIB):
@@ -34,3 +39,4 @@ $(BUILD)/crash.o: $(LIB)/src/$(PLATFORM)_crash.c | $(BUILD)
 
 clean:
 	rm -rf $(BUILD) libnumcalcium/libnumcalcium.a
+	+$(MAKE) -C example clean

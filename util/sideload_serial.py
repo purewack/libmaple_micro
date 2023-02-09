@@ -18,7 +18,7 @@ else:
         config = default_config
 
 ack_byte = b'\xac'
-cart_file = f"../{config['filename']}"
+cart_file = f"{os.path.dirname(os.path.realpath(__file__))}/../{config['filename']}"
 cart_size = os.stat(cart_file).st_size
 with open(cart_file,"rb") as cart:
     print("libnumcalcium.sideload_serial:")
