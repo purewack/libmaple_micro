@@ -4,7 +4,7 @@ void blink_one(){
     *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<14);
     usleep_8MHz(100000);
     *((uint32_t*)(GPIOB + 0xc)) = 0;
-    usleep_8MHz(500000);
+    usleep_8MHz(100000);
 }
 
 CART_MAIN int C_Reset(){
@@ -16,7 +16,7 @@ CART_MAIN int C_Reset(){
 
     while(1){
         blink_one();
-        blink_one();
+        USART_str("blink :o\n");
         usleep_8MHz(2000000);
     };
     return 0;

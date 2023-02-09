@@ -1,4 +1,5 @@
 {
+    "terminal.integrated.defaultProfile.windows": "Ubuntu-20.04 (WSL)",
     "terminal.integrated.profiles.windows": {
         "MSYS2 ARM" : {
             "path": "C:\\devkitPro\\msys2\\usr\\bin\\bash.exe",
