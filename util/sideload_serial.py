@@ -2,29 +2,31 @@ import serial
 import json
 import os
 import time
-import signal
-def stop(signum,frame):
-    exit(1)
-signal.signal(signal.SIGINT, stop)
 
-with open('config.json','r') as f:
-    config = json.load(f)
+config_file = "../config.json"
+default_config = {
+    "filename":"example/build_cart/cart.bin",
+    "port":"/dev/tty.usbserial-1410"
+}
 
-if os.name == 'nt':
-    port = config['port_win']
+if os.path.exists(config_file):
+    with open(config_file,'r') as f:
+        config = json.load(f)
 else:
-    port = config['port_lnx']
+    with open(config_file,'w+') as f:
+        json.dump(default_config,f)
+        config = default_config
 
 ack_byte = b'\xac'
-cart_file = f"{config['root']}/build_cart/{config['filename']}"
+cart_file = f"../{config['filename']}"
 cart_size = os.stat(cart_file).st_size
 with open(cart_file,"rb") as cart:
     print("libnumcalcium.sideload_serial:")
-    print(f"    port: {port} @ {config['baud']}baud")
+    print(f"    port: {config['port']} @ 115200 baud")
     print(f"    file: {cart_file} ")
     print(f"    size: {cart_size}b ")
 
-    ser = serial.Serial(port,config['baud'])
+    ser = serial.Serial(config['port'],115200)
 
     ser.write(cart_size.to_bytes(2, 'little'))
     ack = ser.read()
