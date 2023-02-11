@@ -1,40 +1,45 @@
 BUILD=build
-LIB=libnumcalcium
-SRC_DIR=.
+LIBNUM=libnumcalcium
+LIBMAPLE=libnumcalcium/libmaple
 PLATFORM=f103c8
+BUILD_PATH=$(BUILD)
+LIBMAPLE_PATH=$(LIBMAPLE)
 
 PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft
-CFLAGS= -c -I./$(LIB) $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
+CFLAGS= -c -I./$(LIBNUM) -I./$(LIBMAPLE)/include -I./$(LIBMAPLE)/stm32f1/include $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
 
-all: $(LIB)/$(LIB).a | $(BUILD)
+include $(LIBMAPLE)/rules.mk
+
+all: $(LIBNUM)/$(LIBNUM).a | $(BUILD)
 	@echo "======================="
-	@echo "[$(LIB) built]"
-
-example: $(LIB)/$(LIB).a example/build_firmware/firmware.bin example/build_cart/cart.bin
-	+$(MAKE) -C example
-example_sideload: example
-	python3 util/sideload_serial.py
+	@echo "[libNumCalcium built]"
 
 $(BUILD):
 	mkdir $(BUILD)
-$(LIB):
-	mkdir $(LIB)
+$(LIBNUM):
+	mkdir $(LIBNUM)
 
-$(LIB)/$(LIB).a: $(BUILD)/vect.o $(BUILD)/crash.o $(BUILD)/sys.o $(BUILD)/loader.o | $(LIB)
+$(BUILD_PATH)/%.o: %.cpp
+	$(SILENT_CXX) $(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBMAPLE_INCLUDES) -o $@ -c $< 
+
+$(BUILD)/libmaple.a: $(TGT_BIN) | $(BUILD)
+	$(PRE)-ar crv $(BUILD)/libmaple.a $(TGT_BIN)
+
+$(LIBNUM)/$(LIBNUM).a: $(BUILD)/vect.o $(BUILD)/crash.o $(BUILD)/sys.o $(BUILD)/loader.o | $(LIBNUM)
 	$(PRE)-ar rcs $@ $^
 
-$(BUILD)/vect.o: $(LIB)/src/$(PLATFORM)_vector.c | $(BUILD)
+$(BUILD)/vect.o: $(LIBNUM)/src/$(PLATFORM)_vector.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/sys.o: $(LIB)/src/$(PLATFORM)_stdlib.c | $(BUILD)
+$(BUILD)/sys.o: $(LIBNUM)/src/$(PLATFORM)_stdlib.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/loader.o: $(LIB)/src/$(PLATFORM)_loader.c | $(BUILD)
+$(BUILD)/loader.o: $(LIBNUM)/src/$(PLATFORM)_loader.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
-$(BUILD)/crash.o: $(LIB)/src/$(PLATFORM)_crash.c | $(BUILD)
+$(BUILD)/crash.o: $(LIBNUM)/src/$(PLATFORM)_crash.c | $(BUILD)
 	$(PRE)-gcc $(CFLAGS) -o $@ $^
 
 clean:

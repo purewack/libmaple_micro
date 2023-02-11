@@ -11,7 +11,7 @@ PRE=arm-none-eabi
 MACH=cortex-m3
 SYS=-mcpu=$(MACH) -mthumb -mfloat-abi=soft
 CFLAGS= -c -I../$(LIB) $(SYS) -std=gnu11 -Wall -o0 -fdata-sections -ffunction-sections
-LDFLAGS = --specs=nosys.specs $(SYS) -T ../$(LIB)/ld/$(PLATFORM)_loader.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_FW).map,--emit-relocs
+LDFLAGS = --specs=nosys.specs $(SYS) -T ../$(LIB)/ld/$(PLATFORM)_loader.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_FW).map
 CFLAGS_CART= -c -I../$(LIB) $(SYS) -std=gnu11 -Wall -o0
 LDFLAGS_CART = $(SYS) -T ../$(LIB)/ld/$(PLATFORM)_cart.ld -Wl,-Map=$(D_BUILD_STAT)/$(EXE_CART).map,--gc-sections
 

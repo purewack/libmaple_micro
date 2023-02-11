@@ -3,3 +3,4 @@ doxygen/xml/
 doxygen/html/
 libnumcalcium/*.a
 config.json
+experiments
