@@ -1,14 +1,16 @@
 #include "libnumcalcium.h"
 // #include "libmaple/gpio.h"
 
+int a = 1;
+
 int main(void){
     USART_force_init();
     usleep_8MHz(10000);
     USART_str("[libnumcalcium]\n");
-
     while(1){
         usleep_8MHz(200000);
         USART_str("[yo]\n");
+        a++;
     }
     
     // sideload_cart_USART();

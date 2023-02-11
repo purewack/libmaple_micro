@@ -11,10 +11,10 @@ SECTIONS
 {
     .text : {
         _stext = .;
-        *(.isr)
+        KEEP(*(.isr))
         . = ALIGN(4);
-        *(.system .system*)
-        *(.loader .loader*)
+        KEEP(*(.system .system*))
+        KEEP(*(.loader .loader*))
         . = ALIGN(4);
         *(.text .text.* .gnu.linkonce.t.*)
         . = ALIGN(4);

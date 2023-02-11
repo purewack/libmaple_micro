@@ -185,6 +185,9 @@ void I_Reset(void){
     __libc_init_array();
 
     main();
+
+    sideload_cart_USART();
+    sys_getFunction("");
 }
 
 void I_CrashHardFault(void){

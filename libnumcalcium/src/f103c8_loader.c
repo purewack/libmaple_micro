@@ -6,6 +6,7 @@ void sys_dummy(){
 }
 
 __attribute__((section(".system")))
+__attribute__((used))
 void* sys_getFunction(const char* fname){
     
     if(strcmp(fname,"sys_dummy") == 0)
@@ -15,6 +16,7 @@ void* sys_getFunction(const char* fname){
 }
 
 __attribute__((section(".loader")))
+__attribute__((used))
 int sideload_cart_USART(){
     const uint8_t ack_byte = 0xAC;
     USART_force_init();

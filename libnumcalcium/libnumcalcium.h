@@ -60,5 +60,6 @@ void usleep_8MHz(uint32_t us);
 #define LOAD_SFP(X) ((void* (*)(const char*))0x08000125)(#X)
 #define BEGIN_CART ((int(*)(void))0x20001001)
 int sideload_cart_USART();
+void* sys_getFunction(const char* fname);
 
 #endif
