@@ -10,16 +10,22 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 
 set(EXECUTABLE firmware)
 
+add_definitions(-DMCU_STM32F103C8)
+
 add_subdirectory(libnumcalcium)
+add_subdirectory(libnumcalcium/libmaple)
 
 add_executable(${EXECUTABLE} main.c)
 
 target_link_libraries(${EXECUTABLE} PRIVATE 
     libnumcalcium
+    libmaple
 )
 
 target_include_directories(${EXECUTABLE} PRIVATE
-    ./libnumcalcium
+    libnumcalcium
+    libnumcalcium/libmaple/include/
+    libnumcalcium/libmaple/stm32f1/include/
 )
 
 target_compile_options(${EXECUTABLE} PRIVATE

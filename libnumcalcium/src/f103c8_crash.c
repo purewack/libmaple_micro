@@ -16,9 +16,9 @@ void usleep_8MHz(uint32_t us) {
 void crashBlink(int blink_count){
     while(1){
         for(int j=0; j<blink_count; j++){
-            *((uint32_t*)(GPIOB + 0xc)) = (uint16_t)(1<<15);
+            *((uint32_t*)(GPIOB_REG + 0xc)) = (uint16_t)(1<<15);
             for(int i=0; i<20000; i++){}
-            *((uint32_t*)(GPIOB + 0xc)) = 0;
+            *((uint32_t*)(GPIOB_REG + 0xc)) = 0;
             for(int i=0; i<20000; i++){}
         }
         for(int i=0; i<1000000; i++){}
@@ -54,19 +54,19 @@ void USART_crash_registers(){
 
 void USART_force_init(){
     //RCC->APB2ENR = enable GPIOA + GPIOB ports + AFIO + USART1
-    *((uint32_t*)(RCC + 0x18)) = (uint32_t)(1<<14) | (uint32_t)(0b1101);
+    *((uint32_t*)(RCC_REG + 0x18)) = (uint32_t)(1<<14) | (uint32_t)(0b1101);
     
     //GPIOA:10 RX INPUT
     //GPIOA:9 TX ALT_OUTPUT_PP
-    *((uint32_t*)(GPIOA + 0x04)) = (uint32_t)(0x444444b4);
+    *((uint32_t*)(GPIOA_REG + 0x04)) = (uint32_t)(0x444444b4);
     //GPIOB:15 output PP
-    *((uint32_t*)(GPIOB + 0x04)) = (uint32_t)(0x11444444);
+    *((uint32_t*)(GPIOB_REG + 0x04)) = (uint32_t)(0x11444444);
     
     //usart1 config
     //tx, rx, 8n1 
-    *((uint32_t*)(USART1 + 0x0C)) = (uint16_t)((1<<1) | (1<<2) | (1<<3));
+    *((uint32_t*)(USART1_REG + 0x0C)) = (uint16_t)((1<<1) | (1<<2) | (1<<3));
     //enable usart
-    *((uint32_t*)(USART1 + 0x0C)) |= (uint16_t)(1<<13);
+    *((uint32_t*)(USART1_REG + 0x0C)) |= (uint16_t)(1<<13);
     
 
     /* Convert desired baud rate to baud rate register setting. */
@@ -76,14 +76,15 @@ void USART_force_init(){
     uint32_t tmp = (integer_part / 100) << 4;
     uint32_t fractional_part = integer_part - (100 * (tmp >> 4));
     tmp |= (((fractional_part * 16) + 50) / 100) & ((uint8_t)0x0F);
-    *((uint32_t*)(USART1 + 0x08)) = (uint16_t)tmp;
+    *((uint32_t*)(USART1_REG + 0x08)) = (uint16_t)tmp;
+    for(int i=0; i<100000; i++){}
 }
 
 void USART_char(char c){
     //put char to tx buf
-    *((uint32_t*)(USART1 + 0x04)) = (uint8_t)(c);
+    *((uint32_t*)(USART1_REG + 0x04)) = (uint8_t)(c);
     //wait until transferred
-    while( ! (*((uint32_t*)(USART1 + 0x00)) & (1<<6)) ){}
+    while( ! (*((uint32_t*)(USART1_REG + 0x00)) & (1<<6)) ){}
 }
 void USART_str(const char* str){
     while(*str != 0){
@@ -109,10 +110,10 @@ void USART_hex(uint32_t val){
 }
 
 uint32_t USART_rx(){
-    return (*((uint32_t*)(USART1 + 0x00)) & (1<<5));
+    return (*((uint32_t*)(USART1_REG + 0x00)) & (1<<5));
 }
 unsigned char USART_read(){
-    return (uint8_t)*((uint32_t*)(USART1 + 0x04));
+    return (uint8_t)*((uint32_t*)(USART1_REG + 0x04));
 }
 unsigned char USART_get_char(){
     while(USART_rx() == 0){}
@@ -120,24 +121,24 @@ unsigned char USART_get_char(){
 }
 void USART_start_dma_rx(unsigned int len, unsigned int dest){
     //enable DMA clock
-    *((uint32_t*)(RCC + 0x14)) |= (1<<0); 
-    *((uint32_t*)(DMA1 + 0x58)) = 0;
+    *((uint32_t*)(RCC_REG + 0x14)) |= (1<<0); 
+    *((uint32_t*)(DMA1_REG + 0x58)) = 0;
 
     //enable usart dma rx bit
-    *((uint32_t*)(USART1 + 0x14)) |= (1<<6);
+    *((uint32_t*)(USART1_REG + 0x14)) |= (1<<6);
     //set DMA1->CH5 source as USART1->DR
-    *((uint32_t*)(DMA1 + 0x60)) = (USART1 + 0x04);
+    *((uint32_t*)(DMA1_REG + 0x60)) = (USART1_REG + 0x04);
     //set DMA1->CH5 dest as SRAM space
-    *((uint32_t*)(DMA1 + 0x64)) = dest;
+    *((uint32_t*)(DMA1_REG + 0x64)) = dest;
     //buffer size
-    *((uint32_t*)(DMA1 + 0x5C)) = len;
+    *((uint32_t*)(DMA1_REG + 0x5C)) = len;
     //config dma channel, psize == msize already for USART data
     //: minc, circ, 
-    *((uint32_t*)(DMA1 + 0x58)) = (1<<7) | (1<<5);
+    *((uint32_t*)(DMA1_REG + 0x58)) = (1<<7) | (1<<5);
     //dma ch priority vhigh
-    *((uint32_t*)(DMA1 + 0x58)) |= (0b11<<12);
+    *((uint32_t*)(DMA1_REG + 0x58)) |= (0b11<<12);
     //enable dma channel
-    *((uint32_t*)(DMA1 + 0x58)) |= (1<<0);
+    *((uint32_t*)(DMA1_REG + 0x58)) |= (1<<0);
 
     // USART_str("DMA settings:");
     // USART_str("\n[from  ]"); USART_hex(dest);
@@ -148,8 +149,8 @@ void USART_start_dma_rx(unsigned int len, unsigned int dest){
     // USART_str("\n");
 }
 void USART_end_dma_rx(){
-    *((uint32_t*)(DMA1 + 0x58)) = 0;
+    *((uint32_t*)(DMA1_REG + 0x58)) = 0;
 }
 int USART_dma_head(int size){
-    return size - *((uint32_t*)(DMA1 + 0x5C));
+    return size - *((uint32_t*)(DMA1_REG + 0x5C));
 }

@@ -168,9 +168,6 @@ uint32_t vectors[] __attribute__((section(".isr"))) = {
 extern void __libc_init_array(void);
 
 void I_Reset(void){
-    USART_force_init();
-    usleep_8MHz(1000);
-    USART_str("I_Reset\n");
     //uint32_t sz_text = &_etext - &_stext;
     uint32_t sz_data = &_edata - &_sdata;
     uint32_t sz_bss  = &_ebss  - &_sbss;
@@ -195,7 +192,6 @@ void I_Reset(void){
 
 void I_CrashHardFault(void){
     USART_force_init();
-    usleep_8MHz(10000);
     USART_str("Crash: HardFault\n");
     USART_crash_registers();
     crashBlink(1);
@@ -203,7 +199,6 @@ void I_CrashHardFault(void){
 
 void I_CrashMem(void){
     USART_force_init();
-    usleep_8MHz(10000);
     USART_str("Crash: MemFault\n");
     USART_crash_registers();
     crashBlink(2); 
@@ -211,7 +206,6 @@ void I_CrashMem(void){
 
 void I_CrashBus(void){
     USART_force_init();
-    usleep_8MHz(10000);
     USART_str("Crash: BusFault\n");
     USART_crash_registers();
     crashBlink(3);
@@ -219,7 +213,6 @@ void I_CrashBus(void){
 
 void I_CrashUsage(void){
     USART_force_init();
-    usleep_8MHz(10000);
     USART_str("Crash: UsageFault\n");
     USART_crash_registers();
     crashBlink(4);

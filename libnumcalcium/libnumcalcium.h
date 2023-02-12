@@ -30,11 +30,11 @@
 // Auxiliary Fault Status Register
 #define NVIC_AFSR (*(volatile unsigned int*) (0xE000ED3Cu))
 
-#define RCC     0x40021000
-#define GPIOA   0x40010800
-#define GPIOB   0x40010C00
-#define USART1  0x40013800
-#define DMA1    0x40020000
+#define RCC_REG     0x40021000
+#define GPIOA_REG   0x40010800
+#define GPIOB_REG   0x40010C00
+#define USART1_REG  0x40013800
+#define DMA1_REG    0x40020000
 
 //blocking blink function triggered on fault
 void crashBlink(int blink_count);
