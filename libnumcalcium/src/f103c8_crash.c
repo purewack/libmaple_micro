@@ -26,28 +26,28 @@ void crashBlink(int blink_count){
 }
 
 void USART_crash_registers(){
-    USART_str("\nSYSHND_CTRL\n");
+    USART_str("\nSYSHND_CTRL: ");
     USART_hex(SYSHND_CTRL);
 
-    USART_str("\nNVIC_MFSR\n");
+    USART_str("\nNVIC_MFSR  : ");
     USART_hex(NVIC_MFSR);
 
-    USART_str("\nNVIC_BFSR\n");
+    USART_str("\nNVIC_BFSR  : ");
     USART_hex(NVIC_BFSR);
 
-    USART_str("\nNVIC_UFSR\n");
+    USART_str("\nNVIC_UFSR  : ");
     USART_hex(NVIC_UFSR);
     
-    USART_str("\nNVIC_HFSR\n");
+    USART_str("\nNVIC_HFSR  : ");
     USART_hex(NVIC_HFSR);
 
-    USART_str("\nNVIC_DFSR\n");
+    USART_str("\nNVIC_DFSR  : ");
     USART_hex(NVIC_DFSR);
 
-    USART_str("\nNVIC_BFAR\n");
+    USART_str("\nNVIC_BFAR  : ");
     USART_hex(NVIC_BFAR);
 
-    USART_str("\nNVIC_AFSR\n");
+    USART_str("\nNVIC_AFSR  : ");
     USART_hex(NVIC_AFSR);
 }
 

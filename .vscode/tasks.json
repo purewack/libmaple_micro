@@ -45,6 +45,28 @@
                 "isDefault": true
             },
         },
+
+        {
+            "type": "shell",
+            "label": "Serial Monitor",
+            "detail": "Display contents of serial data",
+            "windows":{
+                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=3 baud=115200 lfnl rows=30 cols=60 scrollback=2000 chardly=1",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/d", "/c"
+                        ]
+                    }
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        },
+
         
         {
             "type": "shell",

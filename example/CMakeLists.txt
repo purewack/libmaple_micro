@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.16)
 
 if(MINGW OR CYGWIN OR WIN32)
     set(UTIL_SEARCH_CMD where)
