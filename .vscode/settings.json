@@ -15,6 +15,7 @@
         }
     },
     "files.associations": {
-        "libnumcalcium.h": "c"
+        "libnumcalcium.h": "c",
+        "adc.h": "c"
     }
 }
