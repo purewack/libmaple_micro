@@ -54,4 +54,5 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
     COMMAND ${TOOLCHAIN_PREFIX}size ${EXECUTABLE}
     COMMAND ${TOOLCHAIN_PREFIX}nm ${EXECUTABLE} > ${CMAKE_BINARY_DIR}/${EXECUTABLE}.nm
     COMMAND ${TOOLCHAIN_PREFIX}objdump -D -h ${EXECUTABLE} > ${CMAKE_BINARY_DIR}/${EXECUTABLE}.dias
+    COMMAND ${TOOLCHAIN_PREFIX}size ${EXECUTABLE} | cut -f 4 | sed -n '2p' | awk '{printf \"*** Using [%.2f] %% of FLASH space ***\\n\", $$1/65535*100}'
 )
