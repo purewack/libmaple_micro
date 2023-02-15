@@ -10,3 +10,8 @@ if not os.path.exists(config_file):
 
 with open(config_file,'r') as f:
     config = json.load(f)
+
+def config_save():
+    with open(config_file, "w") as f:
+        js = json.dumps(config, indent=4)
+        f.write(js)
