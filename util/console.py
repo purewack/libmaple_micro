@@ -3,44 +3,66 @@ import serial
 import curses
 from common import *
 from sideload_serial import sideload
-import stm32loader
+from stm32bootloader import *
 
+COL_BG_PORT = 1
+COL_FG_PORT = 2
+COL_KO_PORT = 3
+COL_OK_PORT = 4
 
 def stats_update():
+    if(ser.is_open):
+        cc = curses.color_pair(COL_OK_PORT)
+    else:
+        cc = curses.color_pair(COL_KO_PORT)
     winStats.clear()
+    winStats.move(1,1)
+    winStats.addstr('   libnumcalcium tools\n')
+    winStats.addnstr(f' Port:{config["port"]}\n',30,cc)
+    winStats.addnstr(f' [T]imestamp:{config["timeStamp"]}\n',30)
+    # winStats.addnstr(f' [A]utoscroll:{config["autoScroll"]}\n',30)
+    winStats.addnstr(f' [S]ideload:{config["sideload"]}\n',30)
+    winStats.addnstr(f' [F]irmware:{config["firmware"]}\n',30)
+    winStats.addnstr(f' [C]lear\n',30)
+    winStats.addnstr(f' [Q]uit\n',30)
     winStats.border()
-    winStats.addstr(0,2,'libnumcalcium tool')
-    winStats.addnstr(1,1,f'Port:{config["port"]}',30)
-    winStats.addnstr(2,1,f'Open:{ser.is_open}',30)
-    winStats.addnstr(3,1,f'[T]imestamp:{config["timeStamp"]}',30)
-    winStats.addnstr(4,1,f'[A]utoscroll:{config["autoScroll"]}',30)
-    winStats.addnstr(5,1,f'[S]ideload:{config["sideload"]}',30)
-    winStats.addnstr(6,1,f'[F]irmware:{config["firmware"]}',30)
-    winStats.addnstr(7,1,f'[C]lear',30)
     winStats.refresh()
 
 def try_port():
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_RED)
-
     try:
-        ser.open()
-        winConsole.bkgd(' ', curses.color_pair(1) | curses.A_BOLD)
+        if(ser.is_open):
+            ser.close()
+        else:
+            ser.open()
     except:
-        winConsole.bkgd(' ', curses.color_pair(2) | curses.A_BOLD)
+        pass
+
+    if(ser.is_open):
+        winConsole.bkgd(' ', curses.color_pair(COL_FG_PORT) | curses.A_BOLD)
+    else:
+        winConsole.bkgd(' ', curses.color_pair(COL_BG_PORT) | curses.A_BOLD)
     
     winConsole.refresh()
     stats_update()
 
 def main(stdscr):
-    curses.init_color(curses.COLOR_RED, 400, 0, 0)
+    curses.init_pair(COL_BG_PORT, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    curses.init_pair(COL_FG_PORT, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(COL_KO_PORT, curses.COLOR_WHITE, curses.COLOR_RED)
+    curses.init_pair(COL_OK_PORT, curses.COLOR_WHITE, curses.COLOR_GREEN)
+    try:
+        curses.init_color(curses.COLOR_RED, 400, 0, 0)
+        curses.init_color(curses.COLOR_BLACK, 10, 10, 10)
+    except:
+        pass
+
     stdscr.nodelay(1)
     stdscr.clear()
     stdscr.refresh()
-    curses.curs_set(0)
+    curses.curs_set(1)
     
     global winConsole 
-    winConsole = curses.newwin(curses.LINES,128,0,32)
+    winConsole = curses.newwin(curses.LINES,curses.COLS-32,0,32)
     winConsole.scrollok(True)
 
     global winStats 
@@ -48,8 +70,9 @@ def main(stdscr):
     
     global ser 
     ser = serial.Serial()
-    ser.port = config['port']
+    ser.parity = serial.PARITY_NONE
     ser.baudrate = 115200
+    ser.port = config['port']
 
     try_port()
 
@@ -80,6 +103,40 @@ def main(stdscr):
         elif(key == ord('c')):
             winConsole.clear()
             winConsole.refresh()
+        elif(key == ord('b')):
+            winConsole.addstr(f'----[bootloader] begin\n')
+            winConsole.refresh()
+            init_bootloader(ser)
+            time.sleep(0.1)
+            
+            winConsole.addstr(f'----[bootloader] get data\n')
+            winConsole.refresh()
+            data = write_bootloader(ser,config['firmware'])
+            if(isinstance(data,int)):
+                winConsole.addstr(f'----[bootloader] firmware written ok\n')
+            else:
+                winConsole.addstr(f'----[bootloader error] {data}\n')
+
+            # winConsole.addstr(f'----[bootloader] get cmds\n')
+            # winConsole.refresh()
+            # [prot,cmds] = get_cmd_bootloader(ser)
+            # if(isinstance(cmds,bytes)):
+            #     winConsole.addstr(f'----Protocol \n\t: ')
+            #     winConsole.addstr(f'{hex(prot)}')
+            #     winConsole.addstr(f'\n----Supported CMDS \n\t: ')
+            #     for i in range(len(cmds)):
+            #         winConsole.addstr(f'{hex(cmds[i])},')
+            #     winConsole.addstr(f'\n----[info] refer to: https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf\n')
+            # else:
+            #     winConsole.addstr(f'----[bootloader error] #{cmds}#\n')
+            winConsole.refresh()
+            time.sleep(0.1)
+
+            finish_bootloader(ser)
+            winConsole.addstr(f'----[bootloader] end\n')
+            winConsole.refresh()
+            time.sleep(0.1)
+            
 
         if(ser.is_open and ser.in_waiting):
             while(ser.in_waiting):
@@ -87,12 +144,13 @@ def main(stdscr):
                     wasNewline = False
                     if(config['timeStamp']):
                         winConsole.addstr(f'@ [{time.time()}] :')
-                        winConsole.addstr(b'\n>\t')
+                        winConsole.addstr('\n>>\t')
                     else:
                         winConsole.addstr('>')
 
                 c = ser.read()
-                winConsole.addstr(c)
+                if(c != b'\r'):
+                    winConsole.addch(c)
                 
                 if(c == b'\n'):
                     winConsole.refresh()

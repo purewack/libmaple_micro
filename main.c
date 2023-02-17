@@ -26,6 +26,9 @@ int main(void){
     adc_enable_single_swstart(ADC1);
     gpio_set_mode(GPIOA,13,GPIO_INPUT_ANALOG);
 
+    usleep_8MHz(1000);
+    usart_putstr(USART1,"Hello yo yo\n");
+
     while(1){
         int adcr = adc_read(ADC1,0);
         usart_putstr(USART1,"[adc 0] ");
@@ -33,7 +36,7 @@ int main(void){
         usart_putstr(USART1,"\n");
         gpio_toggle_bit(GPIOB,6);
         gpio_toggle_bit(GPIOB,7);
-        usleep_8MHz(500000);
+        usleep_8MHz(1000000);
     }
 
 	return 0;

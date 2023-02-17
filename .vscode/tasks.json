@@ -27,49 +27,6 @@
         
         {
             "type": "shell",
-            "label": "STM32 Upload",
-            "detail": "Upload default binary file to target",
-            "windows":{
-                "command": "C:\\Users\\Dominika\\Documents\\Arduino\\hardware\\Arduino_STM32-master\\tools\\win\\stm32flash.exe -w example\\build_firmware\\firmware.bin -v -g 0x0 COM16",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [
-                            "/d", "/c"
-                        ]
-                    }
-                }
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-        },
-
-        {
-            "type": "shell",
-            "label": "Serial Monitor",
-            "detail": "Display contents of serial data",
-            "windows":{
-                "command": "\"C:\\Program Files (x86)\\BEL\\Realterm\\realterm.exe\" port=3 baud=115200 lfnl rows=30 cols=60 scrollback=2000 chardly=1",
-                "options": {
-                    "shell": {
-                        "executable": "cmd.exe",
-                        "args": [
-                            "/d", "/c"
-                        ]
-                    }
-                }
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-        },
-
-        
-        {
-            "type": "shell",
             "label": "Clean Make",
             "detail": "Clean and Make project",
             "dependsOrder": "sequence",
